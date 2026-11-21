@@ -1,0 +1,50 @@
+{{! =====================================================================
+    app/tampilan/cek-koneksi.html — pemeriksaan kesiapan instalasi
+    Logika: public/cek-koneksi.php. Data: hasil (daftar: judul, lulus, keterangan),
+    jumlahLulus, jumlahCek, persenLulus, semuaLulus.
+    Halaman mandiri (tanpa sidebar/topbar): tetap tampil walau instalasi belum lengkap.
+    ===================================================================== }}
+{{> layout/kepala}}
+<main id="konten" class="mx-auto w-full max-w-3xl px-6 py-10 lg:px-10 lg:py-16">
+    <p class="text-sm font-bold tracking-wide">K / B <span class="ml-3">KELAS BERSAMA</span></p>
+    <p class="mt-3 text-xs font-semibold uppercase tracking-wider text-slate">Pemeriksaan instalasi</p>
+
+    <!-- Ringkasan (gaya banner navy dari desain dashboard) -->
+    <section class="mt-4 rounded-xl bg-navy p-6 text-white lg:p-8">
+        <p class="text-xs font-semibold uppercase tracking-wider text-gold">Status database</p>
+        <h1 class="mt-2 text-3xl font-bold lg:text-4xl">Koneksi OK</h1>
+        <p class="mt-2 text-sm text-white/80">
+            {{jumlahLulus}} dari {{jumlahCek}} pemeriksaan lulus.
+            {{#semuaLulus}}Fondasi siap dipakai.{{/semuaLulus}}{{^semuaLulus}}Bereskan baris bertanda "Perlu dicek" di bawah.{{/semuaLulus}}
+        </p>
+        <progress class="progres mt-4" value="{{persenLulus}}" max="100" aria-label="Pemeriksaan lulus">{{persenLulus}}%</progress>
+    </section>
+
+    <!-- Daftar pemeriksaan -->
+    <section class="mt-6 rounded-xl border bg-white">
+        <h2 class="px-6 pt-6 text-xl font-semibold">Daftar pemeriksaan</h2>
+        <ul class="mt-4 divide-y divide-garis">
+            {{#hasil}}
+                <li class="flex items-start gap-4 px-6 py-4">
+                    {{#lulus}}
+                        <span class="mt-0.5 inline-flex min-w-24 shrink-0 justify-center rounded-md bg-gold-muda px-2 py-1 text-xs font-semibold text-navy">Lulus</span>
+                    {{/lulus}}
+                    {{^lulus}}
+                        <span class="mt-0.5 inline-flex min-w-24 shrink-0 justify-center rounded-md bg-red-50 px-2 py-1 text-xs font-semibold text-red-700">Perlu dicek</span>
+                    {{/lulus}}
+                    <div class="min-w-0">
+                        <p class="font-medium">{{judul}}</p>
+                        <p class="mt-1 break-words text-sm text-slate">{{keterangan}}</p>
+                    </div>
+                </li>
+            {{/hasil}}
+        </ul>
+    </section>
+
+    <p class="mt-6 text-xs leading-relaxed text-slate">
+        Halaman ini hanya dapat dibuka dari localhost. Panduan instalasi lengkap ada di README.md,
+        urutan pengerjaan di docs/ROADMAP.md.
+    </p>
+</main>
+</body>
+</html>

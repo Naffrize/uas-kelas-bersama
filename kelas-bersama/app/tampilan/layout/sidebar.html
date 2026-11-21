@@ -1,0 +1,47 @@
+{{! =====================================================================
+    app/tampilan/layout/sidebar.html — navigasi samping layar lebar (desain 10/20)
+    Menu berbeda untuk admin & mahasiswa (PRD bagian 9); menu aktif berwarna gold.
+    Data dari dataTataLetak() di app/tampilan.php: menuUtama, adalahAdmin,
+    alamatDashboard, avatarPengguna, profilAktif.
+    ===================================================================== }}
+<aside class="fixed inset-y-0 left-0 z-30 hidden w-[232px] flex-col overflow-y-auto bg-navy px-6 pb-8 pt-9 text-white lg:flex" aria-label="Navigasi utama">
+    <a href="{{alamatDashboard}}" class="block rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold">
+        <span class="block text-4xl font-bold leading-none tracking-tight text-gold">K / B</span>
+        <span class="mt-6 block text-[13px] font-bold tracking-wide">KELAS BERSAMA</span>
+        <span class="mt-3 block text-xs text-white/75">Ruang kolaborasi akademik</span>
+    </a>
+
+    <nav class="mt-7 flex flex-col gap-2">
+        {{#menuUtama}}
+        <a href="{{alamat}}"
+           class="flex min-h-11 items-center justify-center gap-2 rounded-lg px-4 text-[15px] font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold {{#aktif}}bg-gold text-navy{{/aktif}}{{^aktif}}text-white hover:bg-navy-muda{{/aktif}}"
+           {{#aktif}}aria-current="page"{{/aktif}}>
+            {{labelSidebar}}
+            {{#jumlahMenunggu}}
+            <span class="inline-flex min-w-6 items-center justify-center rounded-full bg-white px-1.5 text-xs font-bold text-navy" aria-label="{{jumlahMenunggu}} pengajuan menunggu">{{jumlahMenunggu}}</span>
+            {{/jumlahMenunggu}}
+        </a>
+        {{/menuUtama}}
+    </nav>
+
+    <div class="mt-6 rounded-lg bg-navy-muda p-4">
+        <p class="label-emas">{{#adalahAdmin}}Akses admin{{/adalahAdmin}}{{^adalahAdmin}}Akses mahasiswa{{/adalahAdmin}}</p>
+        <p class="mt-3 text-xs leading-5 text-white/90">
+            {{#adalahAdmin}}Kelola mata kuliah, tugas, dan persetujuan anggota.{{/adalahAdmin}}{{^adalahAdmin}}Lihat tugas mata kuliahmu. Atur progresmu sendiri.{{/adalahAdmin}}
+        </p>
+    </div>
+
+    <div class="mt-auto pt-10">
+        <div class="flex items-center gap-3">
+            {{#avatarPengguna}}{{> komponen/avatar-9}}{{/avatarPengguna}}
+            <p class="min-w-0 truncate text-sm font-bold">{{pengguna.nama}}</p>
+        </div>
+        <a href="{{dasar}}profil.php"
+           class="tombol mt-4 w-full bg-white text-navy hover:bg-gold-muda {{#profilAktif}}ring-2 ring-gold{{/profilAktif}}">Profil saya</a>
+        <form method="post" action="{{dasar}}logout.php" class="mt-2"
+              data-konfirmasi data-judul="Keluar dari akun?" data-pesan="Anda perlu masuk kembali untuk melanjutkan aktivitas kelas." data-tombol="Ya, keluar">
+            <input type="hidden" name="csrf" value="{{csrf}}">
+            <button type="submit" class="min-h-11 w-full rounded-lg text-[15px] font-semibold text-white transition hover:text-gold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold">Keluar</button>
+        </form>
+    </div>
+</aside>

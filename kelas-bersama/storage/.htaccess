@@ -1,0 +1,4 @@
+# File unggahan PRIVAT: lampiran tugas (uploads/lampiran) dan hasil kerja mahasiswa (uploads/hasil).
+# Browser tidak boleh membukanya langsung. File hanya dikirim lewat public/unduh.php
+# setelah hak akses pengguna diperiksa (aturan keamanan no. 9 di CLAUDE.md).
+Require all denied

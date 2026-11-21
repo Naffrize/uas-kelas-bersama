@@ -1,0 +1,17 @@
+{{! =====================================================================
+    app/tampilan/galat.html — halaman galat sederhana (400, 403, 404, 413)
+    Dibuat oleh tampilkanGalat() di app/helper.php.
+    Data: kode, judul, pesan, alamatKembali, labelKembali.
+    ===================================================================== }}
+{{> layout/kepala}}
+<main id="konten" class="flex min-h-screen items-center justify-center px-6 py-16">
+    <div class="kartu w-full max-w-md p-8">
+        <p class="text-sm font-bold tracking-wide">K / B <span class="ml-3">KELAS BERSAMA</span></p>
+        <p class="label-emas mt-8">Galat {{kode}}</p>
+        <h1 class="mt-3 text-2xl font-bold leading-8">{{judul}}</h1>
+        <p class="mt-3 text-[15px] leading-6 text-slate">{{pesan}}</p>
+        <a href="{{alamatKembali}}" class="tombol tombol-emas mt-8 w-full">{{labelKembali}}</a>
+    </div>
+</main>
+</body>
+</html>

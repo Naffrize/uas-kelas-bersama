@@ -1,0 +1,126 @@
+{{! =====================================================================
+    app/tampilan/mahasiswa/tugas-detail.html — detail tugas mahasiswa
+    Desain 13–16 ("Edit tugas" dihapus; ditambah kartu "Hasil kerja saya"); modal m01 & m02.
+    Logika: public/mahasiswa/tugas-detail.php. Data: tugas, info, tentang, progres,
+    tombolStatus, alamatIni, hasil, lewat.
+    ===================================================================== }}
+<main id="konten" class="mx-auto max-w-[1180px] px-6 pb-28 pt-8 lg:px-10 lg:pb-12">
+    <a href="{{dasar}}mahasiswa/dashboard.php" class="tombol tombol-putih w-full lg:w-auto lg:px-8"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" class="size-4" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18"/></svg> Kembali ke dashboard</a>
+    <h1 class="judul-halaman mt-6">Detail tugas</h1>
+
+    <!-- Kepala tugas -->
+    <section class="kartu mt-6 p-6 lg:p-7" aria-labelledby="judul-tugas">
+        <p><span class="lencana bg-gold-muda px-4 py-1.5 uppercase tracking-wide text-navy lg:min-w-72 lg:justify-center">{{tugas.mk_nama}}</span></p>
+        <h2 id="judul-tugas" class="mt-5 text-[30px] font-bold leading-[38px] tracking-tight lg:text-[40px] lg:leading-[48px]">{{tugas.judul}}</h2>
+        <p class="mt-4 text-[13px] text-slate">Ditambahkan {{info.pembuat}} · {{info.dibuat}} · <span class="whitespace-nowrap">{{tugas.mk_kode}}</span></p>
+        <p class="mt-4 flex flex-wrap items-center gap-3 text-[15px] font-semibold">
+            Deadline: {{info.deadline}}
+            {{#info.terlewat}}{{> komponen/lencana-terlewat}}{{/info.terlewat}}
+        </p>
+    </section>
+
+    <div class="mt-6 grid gap-6 lg:grid-cols-[minmax(0,1fr)_380px]">
+        {{> layout/tentang-tugas}}
+
+        <div class="space-y-6">
+            <!-- Progres saya (F-42) -->
+            <section class="kartu p-6" aria-labelledby="judul-progres-saya">
+                <h2 id="judul-progres-saya" class="judul-bagian">Progres saya</h2>
+                <p class="mt-3 text-[15px] leading-[22px] text-slate">Status ini hanya mengubah progres Anda, bukan progres teman sekelas.</p>
+                <p class="mt-5">{{#progres}}{{> komponen/lencana-progres}}{{/progres}}</p>
+                <progress class="progres mt-5" value="{{progres.persen}}" max="100">{{progres.persen}}%</progress>
+                <div class="mt-5 grid gap-4">
+                    {{#tombolStatus}}
+                        <form method="post" action="{{dasar}}mahasiswa/progres-simpan.php">
+                            <input type="hidden" name="csrf" value="{{csrf}}">
+                            <input type="hidden" name="tugas_id" value="{{tugas.id}}">
+                            <input type="hidden" name="status" value="{{statusBaru}}">
+                            <input type="hidden" name="kembali" value="{{alamatIni}}">
+                            <button type="submit" class="tombol w-full {{#utama}}tombol-emas{{/utama}}{{^utama}}tombol-putih{{/utama}}">{{label}}</button>
+                        </form>
+                    {{/tombolStatus}}
+                </div>
+            </section>
+
+            <!-- Hasil kerja saya (F-43, F-44, F-45, R-07, R-08) -->
+            <section class="kartu p-6" aria-labelledby="judul-hasil">
+                <h2 id="judul-hasil" class="judul-bagian">Hasil kerja saya</h2>
+                {{#hasil}}
+                    <div class="mt-4 rounded-lg bg-warm p-4">
+                        <div class="flex items-start gap-3">
+                            <span class="mt-0.5 w-12 shrink-0 text-[13px] font-semibold text-slate">{{jenis}}</span>
+                            <div class="min-w-0">
+                                <p class="break-all text-[15px] font-semibold">{{nama}}</p>
+                                <p class="mt-1 text-xs leading-[17px] text-slate">{{ukuran}} · diunggah {{diunggah}}</p>
+                                {{#terlambat}}<p class="mt-2">{{> komponen/lencana-terlambat}}</p>{{/terlambat}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-4 grid gap-3 sm:grid-cols-3 lg:grid-cols-1 xl:grid-cols-3">
+                        <a href="{{alamatUnduh}}" class="tombol tombol-putih px-3"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" class="size-4" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3"/></svg> Unduh</a>
+                        <label for="input-hasil" class="tombol tombol-putih cursor-pointer px-3"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" class="size-4" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5m-13.5-9L12 3m0 0 4.5 4.5M12 3v13.5"/></svg> Ganti</label>
+                        <form method="post" action="{{dasar}}mahasiswa/hasil-hapus.php"
+                              data-konfirmasi data-judul="Hapus hasil kerja?" data-pesan="File {{nama}} akan dihapus. Progres tugas tidak berubah." data-tombol="Ya, hapus file">
+                            <input type="hidden" name="csrf" value="{{csrf}}">
+                            <input type="hidden" name="tugas_id" value="{{tugas.id}}">
+                            <button type="submit" class="tombol tombol-putih w-full px-3">Hapus</button>
+                        </form>
+                    </div>
+                {{/hasil}}
+                {{^hasil}}
+                    <p class="mt-3 text-[15px] leading-[22px] text-slate">Unggah satu file hasil kerjamu. Kamu dapat menggantinya kapan saja.</p>
+                    <label for="input-hasil" class="mt-5 flex cursor-pointer flex-col items-center gap-2 rounded-xl border-2 border-dashed bg-warm px-4 py-8 text-center transition hover:border-slate/50">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" class="size-7 text-slate" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5m-13.5-9L12 3m0 0 4.5 4.5M12 3v13.5"/></svg>
+                        <span class="text-[15px] font-semibold">Pilih file hasil kerja</span>
+                        <span class="text-xs text-slate">PDF, DOC, DOCX, JPG, PNG, WEBP · maks. 5 MB</span>
+                    </label>
+                {{/hasil}}
+
+                <form method="post" action="{{dasar}}mahasiswa/hasil-unggah.php" enctype="multipart/form-data">
+                    <input type="hidden" name="csrf" value="{{csrf}}">
+                    <input type="hidden" name="tugas_id" value="{{tugas.id}}">
+                    <input type="file" id="input-hasil" name="hasil" class="sr-only"
+                           accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.webp,application/pdf,image/jpeg,image/png,image/webp"
+                           data-pratinjau="modal-pratinjau-hasil" data-galat="modal-galat-hasil" data-maks="5242880" data-jenis="dokumen" data-kirim-saat-pakai>
+                    <noscript><button type="submit" class="tombol tombol-emas mt-4 w-full">Unggah file terpilih</button></noscript>
+                </form>
+
+                {{#lewat}}
+                    <p class="mt-4 text-xs leading-[17px] text-slate">Deadline sudah lewat — unggahan tetap diterima dan ditandai <strong class="text-navy">Terlambat</strong>.</p>
+                {{/lewat}}
+                <p class="mt-4 text-xs leading-[17px] text-slate">Tidak ada nilai di sini. File hanya dapat dibuka olehmu dan admin.</p>
+            </section>
+        </div>
+    </div>
+</main>
+
+{{! Modal pratinjau hasil kerja (m01): isinya diisi app.js dari file yang dipilih }}
+<dialog id="modal-pratinjau-hasil" class="modal" data-modal-pratinjau aria-labelledby="modal-pratinjau-hasil-judul">
+    <div class="modal-isi">
+        <h2 id="modal-pratinjau-hasil-judul" class="text-2xl font-bold leading-8">Pratinjau hasil kerja</h2>
+        <div class="mt-5 overflow-hidden rounded-xl border bg-warm">
+            <img data-isi-gambar alt="Pratinjau file yang dipilih" class="h-56 w-full object-cover" hidden>
+            <div data-isi-ikon class="flex h-44 flex-col items-center justify-center gap-3 text-slate">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" class="size-10" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z"/></svg>
+                <span data-isi="jenis" class="label-kecil">Dokumen</span>
+            </div>
+        </div>
+        <p data-isi="nama" class="mt-5 break-all text-base font-semibold"></p>
+        <p data-isi="info" class="mt-2 text-sm text-slate"></p>
+        <div class="mt-6 grid gap-4">
+            <button type="button" class="tombol tombol-emas w-full" data-pakai-file>Gunakan file</button>
+            <button type="button" class="tombol tombol-putih w-full" data-pilih-ulang>Pilih file lain</button>
+        </div>
+        <p class="mt-5 text-xs leading-[17px] text-slate">Format: PDF, DOC, DOCX, JPG, PNG, WEBP. Maksimal 5 MB per file.</p>
+    </div>
+</dialog>
+
+{{! Modal galat file (m02) }}
+<dialog id="modal-galat-hasil" class="modal" aria-labelledby="modal-galat-hasil-judul">
+    <div class="modal-isi">
+        <p class="label-kecil">Periksa kembali</p>
+        <h2 id="modal-galat-hasil-judul" class="modal-judul">File belum dapat diunggah</h2>
+        <p data-isi="pesan" class="modal-pesan"></p>
+        <button type="button" class="tombol tombol-emas mt-6 w-full" data-tutup-modal>Pilih ulang</button>
+    </div>
+</dialog>

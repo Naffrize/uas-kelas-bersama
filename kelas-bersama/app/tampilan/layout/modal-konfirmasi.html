@@ -1,0 +1,19 @@
+{{! =====================================================================
+    app/tampilan/layout/modal-konfirmasi.html — satu modal konfirmasi yang dipakai ulang
+    (logout m11, hapus mata kuliah m08, hapus tugas m09, keluarkan anggota m10).
+    Form yang butuh konfirmasi cukup diberi atribut:
+      data-konfirmasi data-judul="..." data-pesan="..." data-tombol="..."
+    app.js menahan pengiriman, mengisi modal ini, lalu mengirim form setelah disetujui.
+    Tanpa JavaScript, form tetap terkirim (tanpa langkah konfirmasi).
+    ===================================================================== }}
+<dialog id="modal-konfirmasi" class="modal" aria-labelledby="konfirmasi-judul">
+    <div class="modal-isi">
+        <p class="label-kecil">Kelas Bersama</p>
+        <h2 id="konfirmasi-judul" class="modal-judul" data-isi="judul">Lanjutkan tindakan ini?</h2>
+        <p class="modal-pesan" data-isi="pesan"></p>
+        <div class="mt-6 grid gap-4">
+            <button type="button" class="tombol tombol-emas w-full" data-setuju data-isi="tombol">Ya, lanjutkan</button>
+            <button type="button" class="tombol tombol-putih w-full" data-tutup-modal>Batal</button>
+        </div>
+    </div>
+</dialog>

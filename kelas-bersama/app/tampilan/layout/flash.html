@@ -1,0 +1,40 @@
+{{! =====================================================================
+    app/tampilan/layout/flash.html — pesan yang tampil sekali setelah suatu aksi
+    Kotak dialog (desain m12 "Profil diperbarui", m13 "Pengaturan disimpan",
+    m02 "File belum dapat diunggah") atau toast kecil yang hilang sendiri.
+    Data: flash.toast & flash.dialog, disiapkan dataFlash() di app/tampilan.php.
+    ===================================================================== }}
+{{#flash.adaToast}}
+    <div class="pointer-events-none fixed inset-x-0 top-4 z-50 flex flex-col items-center gap-3 px-4 lg:left-auto lg:right-8 lg:items-end">
+        {{#flash.toast}}
+        <div class="pointer-events-auto flex w-full max-w-sm items-start gap-3 rounded-xl border bg-white p-4 shadow-lg transition-opacity duration-300"
+             role="{{#adalahGalat}}alert{{/adalahGalat}}{{^adalahGalat}}status{{/adalahGalat}}" data-toast>
+            <span class="mt-0.5 inline-flex size-6 shrink-0 items-center justify-center rounded-full {{#adalahGalat}}bg-red-50 text-red-700{{/adalahGalat}}{{^adalahGalat}}bg-gold-muda text-navy{{/adalahGalat}}">
+                {{#adalahGalat}}<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" class="size-3.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"/></svg>{{/adalahGalat}}{{^adalahGalat}}<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" class="size-3.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5"/></svg>{{/adalahGalat}}
+            </span>
+            <div class="min-w-0 flex-1">
+                <p class="text-[15px] font-semibold">{{judul}}</p>
+                {{#pesan}}
+                <p class="mt-1 break-words text-sm text-slate">{{pesan}}</p>
+                {{/pesan}}
+            </div>
+            <button type="button" class="-m-2 inline-flex size-10 shrink-0 items-center justify-center rounded-lg text-slate hover:text-navy" data-tutup-toast aria-label="Tutup pesan">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" class="size-4" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"/></svg>
+            </button>
+        </div>
+        {{/flash.toast}}
+    </div>
+{{/flash.adaToast}}
+
+{{#flash.dialog}}
+    <dialog class="modal" data-buka-saat-muat aria-labelledby="flash-judul-{{nomor}}">
+        <div class="modal-isi">
+            <p class="label-kecil">{{#adalahGalat}}Periksa kembali{{/adalahGalat}}{{^adalahGalat}}Kelas Bersama{{/adalahGalat}}</p>
+            <h2 id="flash-judul-{{nomor}}" class="modal-judul">{{judul}}</h2>
+            {{#pesan}}
+            <p class="modal-pesan">{{pesan}}</p>
+            {{/pesan}}
+            <button type="button" class="tombol tombol-emas mt-6 w-full" data-tutup-modal>{{#adalahGalat}}Kembali{{/adalahGalat}}{{^adalahGalat}}Selesai{{/adalahGalat}}</button>
+        </div>
+    </dialog>
+{{/flash.dialog}}

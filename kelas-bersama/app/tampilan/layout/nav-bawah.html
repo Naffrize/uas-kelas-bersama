@@ -1,0 +1,20 @@
+{{! =====================================================================
+    app/tampilan/layout/nav-bawah.html — navigasi bawah tetap untuk layar kecil (desain mobile 18)
+    Data dari dataTataLetak(): menuUtama, adalahAdmin (admin 4 menu, mahasiswa 3 menu).
+    ===================================================================== }}
+<nav class="fixed inset-x-0 bottom-0 z-30 border-t bg-white px-4 pb-[max(0.5rem,env(safe-area-inset-bottom))] pt-2 lg:hidden" aria-label="Navigasi bawah">
+    <ul class="grid gap-2 {{#adalahAdmin}}grid-cols-4{{/adalahAdmin}}{{^adalahAdmin}}grid-cols-3{{/adalahAdmin}}">
+        {{#menuUtama}}
+        <li>
+            <a href="{{alamat}}"
+               class="relative flex min-h-11 items-center justify-center rounded-lg text-[13px] font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate {{#aktif}}bg-[#eef0f4] text-navy{{/aktif}}{{^aktif}}text-slate hover:text-navy{{/aktif}}"
+               {{#aktif}}aria-current="page"{{/aktif}}>
+                {{labelBawah}}
+                {{#jumlahMenunggu}}
+                <span class="absolute right-2 top-1.5 inline-flex min-w-5 items-center justify-center rounded-full bg-gold px-1 text-[11px] font-bold text-navy" aria-label="{{jumlahMenunggu}} pengajuan menunggu">{{jumlahMenunggu}}</span>
+                {{/jumlahMenunggu}}
+            </a>
+        </li>
+        {{/menuUtama}}
+    </ul>
+</nav>

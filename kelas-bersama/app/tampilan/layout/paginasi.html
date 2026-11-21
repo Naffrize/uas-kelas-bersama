@@ -1,0 +1,26 @@
+{{! =====================================================================
+    app/tampilan/layout/paginasi.html — "Menampilkan 1–10 dari 23 tugas" + nomor halaman
+    Data: paginasi, disiapkan dataPaginasi() di app/komponen.php
+    (filter tetap terbawa di setiap tautan halaman, F-34).
+    ===================================================================== }}
+{{#paginasi.tampil}}
+    <nav class="mt-6 flex flex-col gap-3 text-[13px] text-slate lg:flex-row lg:items-center lg:gap-10" aria-label="Halaman daftar">
+        <p>Menampilkan {{paginasi.awal}}–{{paginasi.akhir}} dari {{paginasi.total}} {{paginasi.satuan}}</p>
+        {{#paginasi.banyakHalaman}}
+            <ul class="flex flex-wrap items-center gap-1">
+                {{#paginasi.sebelumnya}}
+                    <li><a class="inline-flex min-h-11 min-w-11 items-center justify-center rounded-lg px-3 font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate hover:bg-white hover:text-navy" href="{{paginasi.sebelumnya}}">Sebelumnya</a></li>
+                {{/paginasi.sebelumnya}}
+                {{#paginasi.daftarNomor}}
+                    <li>
+                        <a class="inline-flex min-h-11 min-w-11 items-center justify-center rounded-lg px-3 font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate {{#aktif}}bg-navy text-white{{/aktif}}{{^aktif}}hover:bg-white hover:text-navy{{/aktif}}"
+                           href="{{alamat}}" {{#aktif}}aria-current="page"{{/aktif}}>{{nomor}}</a>
+                    </li>
+                {{/paginasi.daftarNomor}}
+                {{#paginasi.berikutnya}}
+                    <li><a class="inline-flex min-h-11 min-w-11 items-center justify-center rounded-lg px-3 font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate hover:bg-white hover:text-navy" href="{{paginasi.berikutnya}}">Berikutnya</a></li>
+                {{/paginasi.berikutnya}}
+            </ul>
+        {{/paginasi.banyakHalaman}}
+    </nav>
+{{/paginasi.tampil}}

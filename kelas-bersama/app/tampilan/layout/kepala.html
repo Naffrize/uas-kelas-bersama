@@ -1,0 +1,29 @@
+{{! =====================================================================
+    app/tampilan/layout/kepala.html — awal dokumen: head + pembuka body
+    Tailwind CSS dimuat dari CDN resmi (tanpa instalasi & tanpa build).
+    Tema (warna, font, komponen tombol/kartu/modal) ada di public/assets/css/tema.css
+    dan disisipkan ke style bertipe text/tailwindcss di bawah.
+    Bila CDN gagal dimuat (tanpa internet), tailwind-cadangan.js memuat salinan lokal.
+    ===================================================================== }}
+<!doctype html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{judulHalaman}} · Kelas Bersama</title>
+    <meta name="theme-color" content="#17243a">
+    <link rel="icon" href="{{aset.favicon}}" type="image/svg+xml">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap">
+    <style type="text/tailwindcss">
+{{{temaTailwind}}}
+    </style>
+    <script src="{{aset.tailwindCadangan}}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4.3.5/dist/index.global.js"
+            integrity="sha384-t+qLIxS5zM/KF99/doWY+dxTsavdvgayaZt8A9ntLsUjEkiXzYl5M3Ij8zVFPL9j"
+            crossorigin="anonymous" data-tailwind-cdn data-cadangan="{{aset.tailwindLokal}}"></script>
+    <script src="{{aset.appJs}}" defer></script>
+</head>
+<body class="{{kelasBody}}">
+<a href="#konten" class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:rounded-lg focus:bg-white focus:px-4 focus:py-3 focus:font-semibold focus:shadow-lg">Lewati ke konten utama</a>

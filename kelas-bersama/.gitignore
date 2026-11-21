@@ -1,0 +1,32 @@
+# =====================================================================
+# Kelas Bersama — file yang TIDAK ikut di-commit
+# =====================================================================
+
+# Koneksi database lokal (port & password tiap laptop bisa berbeda).
+# Yang di-commit hanya templatnya: config/koneksi.example.php
+/config/koneksi.php
+
+# File unggahan pengguna (nama acak). Foldernya tetap ada lewat .gitkeep,
+# dan .htaccess pengaman folder foto tetap ikut di-commit.
+/storage/uploads/*/*
+!/storage/uploads/*/.gitkeep
+/public/uploads/foto/*
+!/public/uploads/foto/.gitkeep
+!/public/uploads/foto/.htaccess
+
+# Node tidak dipakai lagi: Tailwind dimuat dari CDN (lihat app/tampilan/layout/kepala.html),
+# dan salinan lokalnya (public/assets/js/vendor/) TETAP di-commit untuk keadaan offline.
+# Folder ini tetap diabaikan bila ada anggota yang memasang paket Node sendiri.
+/node_modules/
+
+# Berkas sistem operasi & editor
+.DS_Store
+Thumbs.db
+desktop.ini
+*.log
+.idea/
+.vscode/*
+!.vscode/extensions.json
+
+# Pengaturan lokal Claude Code
+/.claude/settings.local.json

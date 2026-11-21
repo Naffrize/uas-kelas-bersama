@@ -1,0 +1,47 @@
+{{! =====================================================================
+    app/tampilan/layout/topbar.html — bilah atas (desain 10/20) & header ringkas HP
+    Desktop: pilihan mata kuliah, jumlah anggota, badge peran, semester.
+    HP     : logo, badge peran, pilihan mata kuliah, tombol Profil (PRD bagian 9).
+    Data dari dataTataLetak(): aksiTopbar, opsiMkTopbar, adaMkTopbar, infoTopbar,
+    labelPeran, semester, alamatDashboard.
+    ===================================================================== }}
+<header class="sticky top-0 z-20 border-b bg-white/95 backdrop-blur">
+    <!-- Desktop (≥1024px) -->
+    <div class="hidden h-[78px] items-center gap-6 px-10 lg:flex">
+        <form method="get" action="{{aksiTopbar}}" class="flex items-center gap-4">
+            <label for="mk-topbar" class="text-[11px] font-semibold uppercase tracking-wider text-navy/80">Mata kuliah</label>
+            <div class="relative">
+                <select id="mk-topbar" name="mk" class="masukan w-[260px] appearance-none pr-10 font-semibold" data-kirim-otomatis {{^adaMkTopbar}}disabled{{/adaMkTopbar}}>
+                    {{#opsiMkTopbar}}<option value="{{nilai}}"{{#terpilih}} selected{{/terpilih}}>{{label}}</option>{{/opsiMkTopbar}}
+                </select>
+                {{> komponen/panah-pilihan}}
+            </div>
+            <noscript><button type="submit" class="tombol tombol-putih">Tampilkan</button></noscript>
+        </form>
+        <p class="text-sm text-slate">{{infoTopbar}}</p>
+        <span class="lencana bg-gold-muda px-6 py-1.5 font-semibold text-navy">{{labelPeran}}</span>
+        <p class="ml-auto text-sm text-slate xl:ml-0">{{semester}}</p>
+    </div>
+
+    <!-- Mobile (<1024px) -->
+    <div class="px-6 pb-4 pt-5 lg:hidden">
+        <div class="flex items-center gap-3">
+            <a href="{{alamatDashboard}}" class="flex items-center gap-3 rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate">
+                <span class="text-[22px] font-bold leading-none tracking-tight">K / B</span>
+                <span class="text-sm font-semibold">Kelas Bersama</span>
+            </a>
+            <span class="lencana bg-gold-muda px-4 font-semibold text-navy">{{labelPeran}}</span>
+        </div>
+        <div class="mt-4 flex gap-3">
+            <form method="get" action="{{aksiTopbar}}" class="relative min-w-0 flex-1">
+                <label for="mk-topbar-hp" class="sr-only">Pilih mata kuliah</label>
+                <select id="mk-topbar-hp" name="mk" class="masukan appearance-none pr-10 font-semibold" data-kirim-otomatis {{^adaMkTopbar}}disabled{{/adaMkTopbar}}>
+                    {{#opsiMkTopbar}}<option value="{{nilai}}"{{#terpilih}} selected{{/terpilih}}>{{label}}</option>{{/opsiMkTopbar}}
+                </select>
+                {{> komponen/panah-pilihan}}
+                <noscript><button type="submit" class="tombol tombol-putih mt-2 w-full">Tampilkan</button></noscript>
+            </form>
+            <a href="{{dasar}}profil.php" class="tombol tombol-putih shrink-0 px-6">Profil</a>
+        </div>
+    </div>
+</header>

@@ -1,0 +1,49 @@
+{{! =====================================================================
+    app/tampilan/layout/modal-filter.html — modal "Filter tugas" (desain m14 admin / m15 mahasiswa)
+    Data: filterModal, disiapkan dataModalFilter() di app/komponen.php.
+    Pilihan "Progres pribadi" hanya untuk mahasiswa.
+    ===================================================================== }}
+<dialog id="modal-filter" class="modal" aria-labelledby="modal-filter-judul">
+    <form method="get" action="{{filterModal.alamat}}" class="modal-isi">
+        <h2 id="modal-filter-judul" class="text-2xl font-bold leading-8">Filter tugas</h2>
+        {{#filterModal.adaCari}}
+            <input type="hidden" name="q" value="{{filterModal.cari}}">
+        {{/filterModal.adaCari}}
+        <div class="mt-5 space-y-5">
+            <div>
+                <label for="filter-mk" class="label">Mata kuliah</label>
+                <div class="relative">
+                    <select id="filter-mk" name="mk" class="masukan appearance-none pr-10">{{#filterModal.opsiMk}}<option value="{{nilai}}"{{#terpilih}} selected{{/terpilih}}>{{label}}</option>{{/filterModal.opsiMk}}</select>
+                    {{> komponen/panah-pilihan}}
+                </div>
+            </div>
+            {{#filterModal.untukMahasiswa}}
+                <div>
+                    <label for="filter-status" class="label">Progres pribadi</label>
+                    <div class="relative">
+                        <select id="filter-status" name="status" class="masukan appearance-none pr-10">{{#filterModal.opsiStatus}}<option value="{{nilai}}"{{#terpilih}} selected{{/terpilih}}>{{label}}</option>{{/filterModal.opsiStatus}}</select>
+                        {{> komponen/panah-pilihan}}
+                    </div>
+                </div>
+            {{/filterModal.untukMahasiswa}}
+            <div>
+                <label for="filter-deadline" class="label">Deadline</label>
+                <div class="relative">
+                    <select id="filter-deadline" name="deadline" class="masukan appearance-none pr-10">{{#filterModal.opsiDeadline}}<option value="{{nilai}}"{{#terpilih}} selected{{/terpilih}}>{{label}}</option>{{/filterModal.opsiDeadline}}</select>
+                    {{> komponen/panah-pilihan}}
+                </div>
+            </div>
+            <div>
+                <label for="filter-urut" class="label">Urutkan deadline</label>
+                <div class="relative">
+                    <select id="filter-urut" name="urut" class="masukan appearance-none pr-10">{{#filterModal.opsiUrut}}<option value="{{nilai}}"{{#terpilih}} selected{{/terpilih}}>{{label}}</option>{{/filterModal.opsiUrut}}</select>
+                    {{> komponen/panah-pilihan}}
+                </div>
+            </div>
+        </div>
+        <div class="mt-6 grid gap-4">
+            <button type="submit" class="tombol tombol-emas w-full">Terapkan filter</button>
+            <a href="{{filterModal.alamat}}" class="tombol tombol-putih w-full">Reset filter</a>
+        </div>
+    </form>
+</dialog>

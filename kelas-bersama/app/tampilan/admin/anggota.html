@@ -1,0 +1,107 @@
+{{! =====================================================================
+    app/tampilan/admin/anggota.html — anggota & persetujuan
+    Desain 27 + tab Menunggu (Setujui/Tolak) & Disetujui (Keluarkan, modal m10).
+    Logika: public/admin/anggota.php. Data: tabMenunggu, tab, cari, opsiMk, daftarTab,
+    daftarAnggota, anggotaAktif, subjudul, teksBanner, alamatIni, paginasi.
+    ===================================================================== }}
+<main id="konten" class="mx-auto max-w-[1180px] px-6 pb-28 pt-8 lg:px-10 lg:pb-12">
+    <a href="{{dasar}}admin/dashboard.php" class="tombol tombol-putih w-full lg:w-auto lg:px-8"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" class="size-4" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18"/></svg> Kembali ke dashboard</a>
+    <h1 class="judul-halaman mt-6">Anggota</h1>
+    <p class="teks-sekunder mt-3">{{subjudul}}</p>
+
+    <!-- Banner -->
+    <section class="mt-6 rounded-xl bg-navy p-6 text-white lg:p-7">
+        <h2 class="text-[26px] font-bold leading-9 lg:text-[30px]">{{anggotaAktif}} mahasiswa aktif</h2>
+        <p class="mt-3 text-[15px] text-white/85">{{teksBanner}}</p>
+        <a href="{{dasar}}admin/matkul.php" class="tombol tombol-emas mt-6 w-full sm:w-52">Kelola mata kuliah</a>
+    </section>
+
+    <section class="kartu mt-6 p-6" aria-labelledby="judul-daftar-anggota">
+        <h2 id="judul-daftar-anggota" class="sr-only">Daftar anggota</h2>
+        <!-- Tab Menunggu / Disetujui -->
+        <div class="flex gap-2 border-b" role="tablist">
+            {{#daftarTab}}
+                <a href="{{alamat}}" role="tab" aria-selected="{{#aktif}}true{{/aktif}}{{^aktif}}false{{/aktif}}"
+                   class="-mb-px inline-flex min-h-11 items-center gap-2 border-b-2 px-4 text-[15px] font-semibold transition {{#aktif}}border-gold text-navy{{/aktif}}{{^aktif}}border-transparent text-slate hover:text-navy{{/aktif}}">
+                    {{label}}
+                    <span class="inline-flex min-w-6 items-center justify-center rounded-full px-1.5 text-xs {{#aktif}}bg-gold text-navy{{/aktif}}{{^aktif}}bg-warm text-slate{{/aktif}}">{{jumlah}}</span>
+                </a>
+            {{/daftarTab}}
+        </div>
+
+        <!-- Filter mata kuliah & cari -->
+        <form method="get" action="{{dasar}}admin/anggota.php" class="mt-5 grid gap-3 lg:grid-cols-[260px_minmax(0,1fr)_auto]" role="search">
+            <input type="hidden" name="tab" value="{{tab}}">
+            <div class="relative">
+                <label for="filter-mk-anggota" class="sr-only">Mata kuliah</label>
+                <select id="filter-mk-anggota" name="mk" class="masukan appearance-none pr-10">{{#opsiMk}}<option value="{{nilai}}"{{#terpilih}} selected{{/terpilih}}>{{label}}</option>{{/opsiMk}}</select>
+                {{> komponen/panah-pilihan}}
+            </div>
+            <div class="relative">
+                <label for="cari-anggota" class="sr-only">Cari nama atau email anggota</label>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" class="pointer-events-none absolute left-4 top-1/2 size-4 -translate-y-1/2 text-slate" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"/></svg>
+                <input id="cari-anggota" type="search" name="q" value="{{cari}}" maxlength="100" class="masukan border-transparent bg-warm pl-11" placeholder="Cari nama atau email anggota...">
+            </div>
+            <button type="submit" class="tombol tombol-putih">Terapkan</button>
+        </form>
+
+        <!-- Daftar -->
+        <div class="mt-5 hidden px-4 text-[11px] font-semibold uppercase tracking-wider text-navy/80 lg:grid lg:grid-cols-[minmax(0,1fr)_220px_200px_220px] lg:gap-4">
+            <span>Nama / Email</span><span>Mata kuliah</span><span>{{#tabMenunggu}}Diajukan{{/tabMenunggu}}{{^tabMenunggu}}Disetujui{{/tabMenunggu}}</span><span class="text-right">Aksi</span>
+        </div>
+        {{^daftarAnggota}}
+            <p class="mt-4 rounded-lg bg-warm p-5 text-sm text-slate">
+                {{#tabMenunggu}}Tidak ada pengajuan yang menunggu.{{/tabMenunggu}}{{^tabMenunggu}}Belum ada anggota yang disetujui.{{/tabMenunggu}}
+                {{#adaCari}}Coba kata kunci lain.{{/adaCari}}
+            </p>
+        {{/daftarAnggota}}
+        {{#adaAnggota}}
+            <ul class="mt-3 space-y-3">
+                {{#daftarAnggota}}
+                    <li class="grid gap-3 rounded-lg bg-warm p-4 lg:grid-cols-[minmax(0,1fr)_220px_200px_220px] lg:items-center lg:gap-4">
+                        <div class="flex min-w-0 items-center gap-3">
+                            {{#avatar}}{{> komponen/avatar-10}}{{/avatar}}
+                            <div class="min-w-0">
+                                <p class="truncate text-[15px] font-semibold">{{nama}}</p>
+                                <p class="truncate text-xs text-slate">{{email}}</p>
+                            </div>
+                        </div>
+                        <p class="text-sm">{{mkNama}} <span class="whitespace-nowrap text-xs text-slate">· {{mkKode}}</span></p>
+                        <p class="text-[13px] text-slate">{{tanggal}}</p>
+                        <div class="flex flex-col gap-2 sm:flex-row lg:justify-end">
+                            {{#tabMenunggu}}
+                                <form method="post" action="{{dasar}}admin/anggota-aksi.php">
+                                    <input type="hidden" name="csrf" value="{{csrf}}">
+                                    <input type="hidden" name="aksi" value="setujui">
+                                    <input type="hidden" name="id" value="{{id}}">
+                                    <input type="hidden" name="kembali" value="{{alamatIni}}">
+                                    <button type="submit" class="tombol tombol-emas w-full px-4 sm:w-auto">Setujui</button>
+                                </form>
+                                <form method="post" action="{{dasar}}admin/anggota-aksi.php"
+                                      data-konfirmasi data-judul="Tolak pengajuan?" data-pesan="Pengajuan {{nama}} ke {{mkNama}} akan ditolak. Mahasiswa dapat mengajukan ulang." data-tombol="Ya, tolak">
+                                    <input type="hidden" name="csrf" value="{{csrf}}">
+                                    <input type="hidden" name="aksi" value="tolak">
+                                    <input type="hidden" name="id" value="{{id}}">
+                                    <input type="hidden" name="kembali" value="{{alamatIni}}">
+                                    <button type="submit" class="tombol tombol-putih w-full px-4 sm:w-auto">Tolak</button>
+                                </form>
+                            {{/tabMenunggu}}
+                            {{^tabMenunggu}}
+                                <form method="post" action="{{dasar}}admin/anggota-aksi.php"
+                                      data-konfirmasi data-judul="Keluarkan anggota?" data-pesan="{{nama}} akan kehilangan akses ke {{mkNama}}. Progres & hasil kerjanya tetap tersimpan, dan ia dapat mengajukan gabung kembali." data-tombol="Keluarkan anggota">
+                                    <input type="hidden" name="csrf" value="{{csrf}}">
+                                    <input type="hidden" name="aksi" value="keluarkan">
+                                    <input type="hidden" name="id" value="{{id}}">
+                                    <input type="hidden" name="kembali" value="{{alamatIni}}">
+                                    <button type="submit" class="tombol tombol-putih w-full px-6 sm:w-auto">Keluarkan</button>
+                                </form>
+                            {{/tabMenunggu}}
+                        </div>
+                    </li>
+                {{/daftarAnggota}}
+            </ul>
+        {{/adaAnggota}}
+
+        {{> layout/paginasi}}
+    </section>
+</main>

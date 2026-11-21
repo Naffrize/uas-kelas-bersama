@@ -1,0 +1,100 @@
+{{! =====================================================================
+    app/tampilan/admin/matkul.html — kelola mata kuliah
+    Desain 26 ("Kelas" → "Mata kuliah", "Kode undangan" → "Kode MK"); modal m06, m07, m08.
+    Logika: public/admin/matkul.php. Data: jumlahMataKuliah, daftarMataKuliah,
+    daftarModalForm (idModal, mataKuliah, nilai, galat, bukaSaatMuat).
+    ===================================================================== }}
+<main id="konten" class="mx-auto max-w-[1180px] px-6 pb-28 pt-8 lg:px-10 lg:pb-12">
+    <a href="{{dasar}}admin/dashboard.php" class="tombol tombol-putih w-full lg:w-auto lg:px-8"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" class="size-4" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18"/></svg> Kembali ke dashboard</a>
+    <h1 class="judul-halaman mt-6">Mata kuliah</h1>
+    <p class="teks-sekunder mt-3">Atur kode, nama, dan kapasitas mata kuliah dalam satu ruang.</p>
+
+    <div class="mt-8 flex flex-col gap-4 sm:flex-row sm:items-center">
+        <h2 class="text-xl font-semibold">{{jumlahMataKuliah}} mata kuliah dikelola</h2>
+        <button type="button" class="tombol tombol-emas sm:ml-4 sm:w-56" data-buka-modal="modal-buat-matkul"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" class="size-4" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/></svg> Buat mata kuliah</button>
+    </div>
+
+    {{^daftarMataKuliah}}
+        <div class="kartu mt-6 p-8">
+            <p class="text-[15px] font-semibold">Belum ada mata kuliah.</p>
+            <p class="mt-1 text-sm text-slate">Buat mata kuliah pertama agar mahasiswa dapat mengajukan gabung.</p>
+        </div>
+    {{/daftarMataKuliah}}
+    {{#adaMataKuliah}}
+        <ul class="mt-6 grid gap-4 lg:grid-cols-2 lg:gap-6">
+            {{#daftarMataKuliah}}
+                <li class="kartu flex flex-col p-6">
+                    <p class="label-kecil">{{#penuh}}Kapasitas penuh{{/penuh}}{{^penuh}}Mata kuliah tersedia{{/penuh}}</p>
+                    <h3 class="mt-3 text-2xl font-bold leading-8">{{nama}}</h3>
+                    <p class="mt-3 text-[15px] font-medium">Kode MK: {{kode}}</p>
+                    {{#deskripsi}}
+                        <p class="mt-2 line-clamp-2 text-sm leading-[22px] text-slate">{{deskripsi}}</p>
+                    {{/deskripsi}}
+                    <p class="mt-3 text-[15px] text-slate">
+                        {{jumlahAnggota}} / {{kapasitas}} anggota ·
+                        {{jumlahTugas}} tugas
+                    </p>
+                    {{#jumlahMenunggu}}
+                        <p class="mt-3"><span class="lencana bg-gold-muda text-navy">{{jumlahMenunggu}} pengajuan menunggu</span></p>
+                    {{/jumlahMenunggu}}
+                    <div class="mt-auto grid gap-3 pt-6 sm:grid-cols-[1.4fr_1fr_1fr]">
+                        <a href="{{dasar}}admin/anggota.php?mk={{id}}&amp;tab={{#jumlahMenunggu}}menunggu{{/jumlahMenunggu}}{{^jumlahMenunggu}}disetujui{{/jumlahMenunggu}}" class="tombol tombol-emas px-3">Lihat anggota</a>
+                        <button type="button" class="tombol tombol-putih px-3" data-buka-modal="modal-edit-matkul-{{id}}">Edit</button>
+                        <form method="post" action="{{dasar}}admin/matkul-hapus.php"
+                              data-konfirmasi data-judul="Hapus mata kuliah ini?"
+                              data-pesan="{{nama}} beserta {{jumlahTugas}} tugas, pendaftaran anggota, progres, dan file hasil kerjanya akan dihapus permanen. Pastikan mata kuliah sudah tidak digunakan."
+                              data-tombol="Ya, hapus mata kuliah">
+                            <input type="hidden" name="csrf" value="{{csrf}}">
+                            <input type="hidden" name="id" value="{{id}}">
+                            <button type="submit" class="tombol tombol-putih w-full px-3">Hapus</button>
+                        </form>
+                    </div>
+                </li>
+            {{/daftarMataKuliah}}
+        </ul>
+    {{/adaMataKuliah}}
+
+    <p class="mt-8 text-xs leading-[17px] text-slate">Kapasitas tidak boleh lebih kecil dari jumlah anggota yang sudah disetujui. Menghapus mata kuliah juga menghapus tugas dan file di dalamnya.</p>
+</main>
+
+{{#daftarModalForm}}
+    <!-- Modal buat (m06) / edit (m07) mata kuliah -->
+    <dialog id="{{idModal}}" class="modal" aria-labelledby="{{idModal}}-judul" {{#bukaSaatMuat}}data-buka-saat-muat{{/bukaSaatMuat}}>
+        <form method="post" action="{{dasar}}admin/matkul-simpan.php" class="modal-isi" novalidate>
+            <input type="hidden" name="csrf" value="{{csrf}}">
+            {{#mataKuliah}}
+                <input type="hidden" name="id" value="{{mataKuliah.id}}">
+            {{/mataKuliah}}
+            <h2 id="{{idModal}}-judul" class="text-2xl font-bold leading-8">{{#mataKuliah}}Edit mata kuliah{{/mataKuliah}}{{^mataKuliah}}Buat mata kuliah baru{{/mataKuliah}}</h2>
+            <p class="mt-3 text-[15px] leading-6 text-slate">Satu ruang untuk satu mata kuliah. Atur kapasitas sesuai kebutuhan.</p>
+            <div class="mt-5 space-y-5">
+                <div>
+                    <label for="{{idModal}}-nama" class="label">Nama mata kuliah *</label>
+                    <input id="{{idModal}}-nama" name="nama" type="text" maxlength="100" required class="masukan{{#galat.nama}} masukan-galat{{/galat.nama}}" value="{{nilai.nama}}" placeholder="Pemrograman Web">
+                    {{#galat.nama}}<p class="galat-isian" id="galat-nama">{{galat.nama}}</p>{{/galat.nama}}
+                </div>
+                <div>
+                    <label for="{{idModal}}-kode" class="label">Kode MK *</label>
+                    <input id="{{idModal}}-kode" name="kode" type="text" maxlength="20" required class="masukan{{#galat.kode}} masukan-galat{{/galat.kode}} uppercase" value="{{nilai.kode}}" placeholder="IF-PWEB">
+                    <p class="bantuan">Kode harus unik: huruf besar, angka, atau strip. Maksimal 20 karakter.</p>
+                    {{#galat.kode}}<p class="galat-isian" id="galat-kode">{{galat.kode}}</p>{{/galat.kode}}
+                </div>
+                <div>
+                    <label for="{{idModal}}-deskripsi" class="label">Deskripsi</label>
+                    <textarea id="{{idModal}}-deskripsi" name="deskripsi" rows="3" maxlength="1000" class="masukan{{#galat.deskripsi}} masukan-galat{{/galat.deskripsi}}" placeholder="Opsional">{{nilai.deskripsi}}</textarea>
+                    {{#galat.deskripsi}}<p class="galat-isian" id="galat-deskripsi">{{galat.deskripsi}}</p>{{/galat.deskripsi}}
+                </div>
+                <div>
+                    <label for="{{idModal}}-kapasitas" class="label">Kapasitas anggota *</label>
+                    <input id="{{idModal}}-kapasitas" name="kapasitas" type="number" min="1" max="500" step="1" required class="masukan{{#galat.kapasitas}} masukan-galat{{/galat.kapasitas}}" value="{{nilai.kapasitas}}">
+                    <p class="bantuan">Wajib 1–500. Tidak kurang dari jumlah anggota aktif{{#mataKuliah}} ({{mataKuliah.jumlahAnggota}} orang){{/mataKuliah}}.</p>
+                    {{#galat.kapasitas}}<p class="galat-isian" id="galat-kapasitas">{{galat.kapasitas}}</p>{{/galat.kapasitas}}
+                </div>
+            </div>
+            <div class="mt-6 grid gap-4">
+                <button type="submit" class="tombol tombol-emas w-full">{{#mataKuliah}}Simpan perubahan{{/mataKuliah}}{{^mataKuliah}}Buat mata kuliah{{/mataKuliah}}</button>
+                <button type="button" class="tombol tombol-putih w-full" data-tutup-modal>Batal</button>
+            </div>
+        </form>
+    </dialog>
+{{/daftarModalForm}}

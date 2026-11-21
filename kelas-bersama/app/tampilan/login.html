@@ -1,0 +1,53 @@
+{{! =====================================================================
+    app/tampilan/login.html — halaman masuk (desain 01-login)
+    Logika: public/login.php. Data: email, adaEmail, ingat, pesanGalat, pesanInfo.
+    ===================================================================== }}
+<div class="min-h-screen lg:grid lg:grid-cols-[40%_1fr]">
+    {{> layout/panel-auth}}
+
+    <main id="konten" class="flex min-h-screen flex-col justify-center px-6 py-12 lg:px-16">
+        <div class="mx-auto w-full max-w-[440px]">
+            <p class="mb-12 flex items-center gap-6 lg:hidden">
+                <span class="text-[22px] font-bold tracking-tight">K / B</span>
+                <span class="text-[13px] font-bold tracking-wide">KELAS BERSAMA</span>
+            </p>
+
+            <p class="remah">Mulai dari sini</p>
+            <h1 class="mt-5 text-[28px] font-bold leading-10 tracking-tight lg:text-4xl lg:leading-[46px]">Selamat datang kembali.</h1>
+            <p class="mt-4 text-sm text-slate">Masuk dan lanjutkan langkah kecilmu hari ini.</p>
+
+            {{#pesanInfo}}
+                <p class="mt-6 rounded-lg border bg-white px-4 py-3 text-sm text-navy" role="status">{{pesanInfo}}</p>
+            {{/pesanInfo}}
+            {{#pesanGalat}}
+                <p class="mt-6 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm font-medium text-red-800" role="alert">{{pesanGalat}}</p>
+            {{/pesanGalat}}
+
+            <form method="post" action="{{dasar}}login.php" class="mt-8 space-y-6">
+                <input type="hidden" name="csrf" value="{{csrf}}">
+                <div>
+                    <label for="email" class="label text-sm">Email</label>
+                    <input id="email" name="email" type="email" class="masukan min-h-12" value="{{email}}"
+                           maxlength="120" autocomplete="email" placeholder="nama@kampus.ac.id" required {{^adaEmail}}autofocus{{/adaEmail}}>
+                </div>
+                <div>
+                    <label for="sandi" class="label text-sm">Kata sandi</label>
+                    <input id="sandi" name="sandi" type="password" class="masukan min-h-12" maxlength="72"
+                           autocomplete="current-password" required {{#adaEmail}}autofocus{{/adaEmail}}>
+                </div>
+                <label class="flex min-h-11 cursor-pointer items-center gap-3 text-[15px]">
+                    <span class="relative inline-flex size-5 shrink-0">
+                        <input type="checkbox" name="ingat" value="1" {{#ingat}}checked{{/ingat}}
+                               class="peer size-5 cursor-pointer appearance-none rounded-[5px] border border-slate/60 bg-white transition checked:border-navy checked:bg-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate focus-visible:ring-offset-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" class="pointer-events-none absolute inset-0 m-auto hidden size-3.5 text-white peer-checked:block" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5"/></svg>
+                    </span>
+                    Ingat saya selama 30 hari
+                </label>
+                <button type="submit" class="tombol tombol-emas w-full">Masuk</button>
+            </form>
+
+            <a href="{{dasar}}register.php" class="tombol tombol-putih mt-5 w-full">Belum punya akun? Daftar mahasiswa</a>
+            <p class="mt-6 text-xs leading-[17px] text-slate">Akses sesuai peran akun. Admin mengelola mata kuliah dan tugas; mahasiswa berkolaborasi dan mencatat progres pribadi.</p>
+        </div>
+    </main>
+</div>

@@ -1,0 +1,58 @@
+{{! =====================================================================
+    app/tampilan/register.html — registrasi mahasiswa (desain 02-register)
+    Logika: public/register.php. Data: nilai (nama, email), galat (pesan per isian), adaGalat.
+    Isian bermasalah diberi class masukan-galat + pesan merah di bawahnya.
+    ===================================================================== }}
+<div class="min-h-screen lg:grid lg:grid-cols-[40%_1fr]">
+    {{> layout/panel-auth}}
+
+    <main id="konten" class="flex min-h-screen flex-col justify-center px-6 py-12 lg:px-16">
+        <div class="mx-auto w-full max-w-[440px]">
+            <p class="mb-12 flex items-center gap-6 lg:hidden">
+                <span class="text-[22px] font-bold tracking-tight">K / B</span>
+                <span class="text-[13px] font-bold tracking-wide">KELAS BERSAMA</span>
+            </p>
+
+            <p class="remah">Akun mahasiswa</p>
+            <h1 class="mt-5 text-[28px] font-bold leading-10 tracking-tight lg:text-4xl lg:leading-[46px]">Mulai belajar bersama.</h1>
+            <p class="mt-4 text-sm text-slate">Daftar, lalu pilih mata kuliah yang ingin kamu ikuti.</p>
+
+            {{#adaGalat}}
+                <p class="mt-6 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm font-medium text-red-800" role="alert">Periksa kembali isian yang ditandai.</p>
+            {{/adaGalat}}
+
+            <form method="post" action="{{dasar}}register.php" class="mt-8 space-y-6">
+                <input type="hidden" name="csrf" value="{{csrf}}">
+                <div>
+                    <label for="nama" class="label text-sm">Nama lengkap</label>
+                    <input id="nama" name="nama" type="text" class="masukan{{#galat.nama}} masukan-galat{{/galat.nama}} min-h-12" value="{{nilai.nama}}"
+                           maxlength="100" autocomplete="name" placeholder="Nadia Putri" required {{#galat.nama}}aria-invalid="true" aria-describedby="galat-nama"{{/galat.nama}}>
+                    {{#galat.nama}}<p class="galat-isian" id="galat-nama">{{galat.nama}}</p>{{/galat.nama}}
+                </div>
+                <div>
+                    <label for="email" class="label text-sm">Email kampus</label>
+                    <input id="email" name="email" type="email" class="masukan{{#galat.email}} masukan-galat{{/galat.email}} min-h-12" value="{{nilai.email}}"
+                           maxlength="120" autocomplete="email" placeholder="nama@kampus.ac.id" required {{#galat.email}}aria-invalid="true" aria-describedby="galat-email"{{/galat.email}}>
+                    {{#galat.email}}<p class="galat-isian" id="galat-email">{{galat.email}}</p>{{/galat.email}}
+                </div>
+                <div>
+                    <label for="sandi" class="label text-sm">Kata sandi</label>
+                    <input id="sandi" name="sandi" type="password" class="masukan{{#galat.sandi}} masukan-galat{{/galat.sandi}} min-h-12"
+                           minlength="8" maxlength="72" autocomplete="new-password" required aria-describedby="bantuan-sandi" {{#galat.sandi}}aria-invalid="true" aria-describedby="galat-sandi"{{/galat.sandi}}>
+                    <p class="bantuan" id="bantuan-sandi">Minimal 8 karakter.</p>
+                    {{#galat.sandi}}<p class="galat-isian" id="galat-sandi">{{galat.sandi}}</p>{{/galat.sandi}}
+                </div>
+                <div>
+                    <label for="konfirmasi" class="label text-sm">Konfirmasi kata sandi</label>
+                    <input id="konfirmasi" name="konfirmasi" type="password" class="masukan{{#galat.konfirmasi}} masukan-galat{{/galat.konfirmasi}} min-h-12"
+                           minlength="8" maxlength="72" autocomplete="new-password" required {{#galat.konfirmasi}}aria-invalid="true" aria-describedby="galat-konfirmasi"{{/galat.konfirmasi}}>
+                    {{#galat.konfirmasi}}<p class="galat-isian" id="galat-konfirmasi">{{galat.konfirmasi}}</p>{{/galat.konfirmasi}}
+                </div>
+                <button type="submit" class="tombol tombol-emas w-full">Daftar &amp; pilih mata kuliah</button>
+            </form>
+
+            <a href="{{dasar}}login.php" class="tombol tombol-putih mt-5 w-full">Sudah punya akun? Masuk</a>
+            <p class="mt-6 text-xs leading-[17px] text-slate">Pendaftaran ini untuk mahasiswa. Akses admin diberikan oleh pengelola kelas.</p>
+        </div>
+    </main>
+</div>

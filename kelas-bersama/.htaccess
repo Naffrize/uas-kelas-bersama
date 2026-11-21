@@ -1,0 +1,6 @@
+# Akar proyek Kelas Bersama.
+# Halaman aplikasi hanya ada di folder public/ (index.php di akar mengarahkan ke sana).
+# Folder app/, config/, database/, storage/, dan tools/ punya .htaccess sendiri yang menolak akses.
+
+# Jangan tampilkan daftar isi folder jika tidak ada index.
+Options -Indexes

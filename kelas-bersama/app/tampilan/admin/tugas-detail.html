@@ -1,0 +1,96 @@
+{{! =====================================================================
+    app/tampilan/admin/tugas-detail.html — detail tugas admin
+    Desain 23 (kartu kanan → ringkasan & tabel "Pengumpulan"); modal m09 hapus tugas.
+    Logika: public/admin/tugas-detail.php. Data: tugas, info, tentang, ringkasan, pengumpulan.
+    ===================================================================== }}
+<main id="konten" class="mx-auto max-w-[1180px] px-6 pb-28 pt-8 lg:px-10 lg:pb-12">
+    <a href="{{dasar}}admin/tugas.php" class="tombol tombol-putih w-full lg:w-auto lg:px-8"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" class="size-4" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18"/></svg> Kembali ke daftar tugas</a>
+    <h1 class="judul-halaman mt-6">Detail tugas</h1>
+
+    <!-- Kepala tugas + Edit / Hapus -->
+    <section class="kartu mt-6 p-6 lg:p-7" aria-labelledby="judul-tugas">
+        <p><span class="lencana bg-gold-muda px-4 py-1.5 uppercase tracking-wide text-navy lg:min-w-72 lg:justify-center">{{tugas.mk_nama}}</span></p>
+        <h2 id="judul-tugas" class="mt-5 text-[30px] font-bold leading-[38px] tracking-tight lg:text-[40px] lg:leading-[48px]">{{tugas.judul}}</h2>
+        <p class="mt-4 text-[13px] text-slate">
+            Ditambahkan {{info.pembuat}} · {{info.dibuat}}
+            {{#info.diperbarui}} · Diperbarui {{info.diperbarui}}{{/info.diperbarui}} · Dapat dikelola admin
+        </p>
+        <p class="mt-4 flex flex-wrap items-center gap-3 text-[15px] font-semibold">
+            Deadline: {{info.deadline}} {{#info.terlewat}}{{> komponen/lencana-terlewat}}{{/info.terlewat}}
+        </p>
+        <div class="mt-6 flex flex-col gap-3 sm:flex-row">
+            <a href="{{dasar}}admin/tugas-form.php?id={{tugas.id}}" class="tombol tombol-emas sm:w-40"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" class="size-4" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10"/></svg> Edit tugas</a>
+            <form method="post" action="{{dasar}}admin/tugas-hapus.php"
+                  data-konfirmasi data-judul="Hapus tugas ini?" data-pesan="Tugas akan dihapus dari mata kuliah beserta progres, hasil kerja, dan lampirannya. Tindakan ini tidak dapat dibatalkan." data-tombol="Ya, hapus tugas">
+                <input type="hidden" name="csrf" value="{{csrf}}">
+                <input type="hidden" name="id" value="{{tugas.id}}">
+                <button type="submit" class="tombol tombol-putih w-full sm:w-40">Hapus tugas</button>
+            </form>
+        </div>
+    </section>
+
+    <div class="mt-6 grid gap-6 lg:grid-cols-[minmax(0,1fr)_380px]">
+        {{> layout/tentang-tugas}}
+
+        <!-- Ringkasan pengumpulan (F-50) -->
+        <section class="kartu h-fit p-6" aria-labelledby="judul-ringkasan">
+            <h2 id="judul-ringkasan" class="judul-bagian">Pengumpulan</h2>
+            <p class="mt-3 text-[15px] leading-[22px] text-slate">
+                <strong class="text-navy">{{ringkasan.selesai}} dari {{ringkasan.anggota}}</strong> selesai · {{ringkasan.mengunggah}} mengunggah
+            </p>
+            <progress class="progres mt-5" value="{{ringkasan.selesai}}" max="{{ringkasan.maksBilah}}">{{ringkasan.selesai}} selesai</progress>
+            <dl class="mt-5 grid grid-cols-3 gap-3 text-center">
+                <div class="rounded-lg bg-warm p-3"><dt class="text-xs text-slate">Belum mulai</dt><dd class="mt-1 text-xl font-bold">{{ringkasan.belumMulai}}</dd></div>
+                <div class="rounded-lg bg-gold-muda p-3"><dt class="text-xs text-slate">Dikerjakan</dt><dd class="mt-1 text-xl font-bold">{{ringkasan.dikerjakan}}</dd></div>
+                <div class="rounded-lg bg-hijau-muda p-3"><dt class="text-xs text-slate">Selesai</dt><dd class="mt-1 text-xl font-bold">{{ringkasan.selesai}}</dd></div>
+            </dl>
+            <a href="{{dasar}}admin/anggota.php?tab=disetujui&amp;mk={{tugas.mata_kuliah_id}}" class="tombol tombol-putih mt-6 w-full">Kelola anggota</a>
+            <p class="mt-4 text-xs leading-[17px] text-slate">Progres setiap mahasiswa tetap bersifat pribadi. Tidak ada nilai di aplikasi ini.</p>
+        </section>
+    </div>
+
+    <!-- Tabel pengumpulan (desktop tabel, mobile kartu) -->
+    <section class="kartu mt-6 p-6" aria-labelledby="judul-pengumpulan">
+        <h2 id="judul-pengumpulan" class="judul-bagian">Daftar pengumpulan</h2>
+        <p class="mt-2 text-[13px] text-slate">Anggota {{tugas.mk_nama}} yang pengajuannya disetujui.</p>
+
+        {{^pengumpulan}}
+            <p class="mt-5 rounded-lg bg-warm p-5 text-sm text-slate">Belum ada anggota yang disetujui di mata kuliah ini.</p>
+        {{/pengumpulan}}
+        {{#adaPengumpulan}}
+            <div class="mt-5 hidden rounded-lg bg-[#edf0f4] px-4 py-3 text-[11px] font-semibold uppercase tracking-wider text-navy/80 lg:grid lg:grid-cols-[minmax(0,1fr)_170px_minmax(0,1fr)_200px] lg:gap-4">
+                <span>Nama / Email</span><span>Status progres</span><span>File hasil</span><span>Waktu unggah</span>
+            </div>
+            <ul class="mt-3 divide-y divide-garis lg:mt-0">
+                {{#pengumpulan}}
+                    <li class="grid gap-3 py-4 lg:grid-cols-[minmax(0,1fr)_170px_minmax(0,1fr)_200px] lg:items-center lg:gap-4 lg:px-4">
+                        <div class="flex min-w-0 items-center gap-3">
+                            {{#avatar}}{{> komponen/avatar-9}}{{/avatar}}
+                            <div class="min-w-0">
+                                <p class="truncate text-[15px] font-semibold">{{nama}}</p>
+                                <p class="truncate text-xs text-slate">{{email}}</p>
+                            </div>
+                        </div>
+                        <div>{{#progres}}{{> komponen/lencana-progres}}{{/progres}}</div>
+                        <div class="min-w-0">
+                            {{#hasil}}
+                                <a href="{{alamat}}"
+                                   class="inline-flex min-h-11 max-w-full items-center gap-2 text-sm font-semibold text-navy underline decoration-gold decoration-2 underline-offset-4">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" class="size-4 shrink-0" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3"/></svg><span class="truncate">{{nama}}</span>
+                                </a>
+                                <p class="text-xs text-slate">{{jenis}} · {{ukuran}}</p>
+                            {{/hasil}}
+                            {{^hasil}}
+                                <span class="text-sm text-slate">—</span>
+                            {{/hasil}}
+                        </div>
+                        <div class="flex flex-wrap items-center gap-2 text-[13px]">
+                            {{#diunggah}}{{diunggah}}{{/diunggah}}{{^diunggah}}<span class="text-slate">—</span>{{/diunggah}}
+                            {{#terlambat}}{{> komponen/lencana-terlambat}}{{/terlambat}}
+                        </div>
+                    </li>
+                {{/pengumpulan}}
+            </ul>
+        {{/adaPengumpulan}}
+    </section>
+</main>

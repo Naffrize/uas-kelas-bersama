@@ -1,0 +1,2 @@
+{{! Avatar 40px (daftar anggota): foto profil atau inisial nama. Data: fotoUrl, nama, inisial. }}
+{{#fotoUrl}}<img src="{{fotoUrl}}" alt="Foto {{nama}}" class="size-10 text-sm shrink-0 rounded-full object-cover">{{/fotoUrl}}{{^fotoUrl}}<span class="size-10 text-sm inline-flex shrink-0 items-center justify-center rounded-full bg-gold font-bold text-navy" aria-hidden="true">{{inisial}}</span>{{/fotoUrl}}

@@ -1,0 +1,18 @@
+{{! =====================================================================
+    app/tampilan/layout/panel-auth.html — panel navy kiri halaman masuk & daftar (desain 01/02)
+    Disembunyikan di layar kecil. Data: ringkasPanel (ringkasPanelTamu() di app/kueri.php),
+    sehingga kartu memakai angka sungguhan (PRD bagian 9).
+    ===================================================================== }}
+<aside class="hidden bg-navy px-14 py-16 text-white lg:block" aria-label="Tentang Kelas Bersama">
+    <p class="flex items-center gap-6 text-xl font-bold"><span>K / B</span><span>KELAS BERSAMA</span></p>
+    <p class="mt-8 text-xs font-medium tracking-wide text-gold">RUANG KOLABORASI AKADEMIK</p>
+    <p class="mt-12 text-[56px] font-bold leading-[75px] tracking-tight">Satu kelas.<br>Satu langkah<br>lebih teratur.</p>
+    <p class="mt-12 max-w-md text-lg leading-[25px] text-white/85">Kelola tugas bersama, pantau progres pribadi. Lebih fokus belajar, lebih tenang menjalani hari.</p>
+    <div class="mt-9 max-w-[464px] rounded-xl bg-navy-muda p-6">
+        <p class="label-emas">Mata kuliah tersedia</p>
+        <p class="mt-5 text-[26px] font-bold leading-8">{{ringkasPanel.mata_kuliah}} mata kuliah</p>
+        <p class="mt-4 text-sm text-white/70">{{ringkasPanel.anggota}} mahasiswa aktif <span class="mx-2">/</span> {{ringkasPanel.kapasitas}} kapasitas</p>
+        <p class="mt-4 text-sm">{{ringkasPanel.tugas}} tugas dibagikan · satu ruang kolaborasi</p>
+    </div>
+    <p class="mt-10 text-[11px] font-medium tracking-wide">TERHUBUNG UNTUK TUMBUH BERSAMA.</p>
+</aside>

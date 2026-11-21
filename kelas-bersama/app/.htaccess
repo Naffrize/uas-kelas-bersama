@@ -1,0 +1,3 @@
+# Kode PHP bersama (keamanan, auth, helper, upload, layout).
+# File di sini hanya di-require oleh halaman di public/, tidak boleh dibuka langsung dari browser.
+Require all denied

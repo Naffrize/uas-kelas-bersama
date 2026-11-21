@@ -1,0 +1,149 @@
+/* =====================================================================
+   Kelas Bersama — tema Tailwind CSS v4 (TANPA instalasi, TANPA build)
+
+   File ini TIDAK dipasang dengan <link>. Isinya disisipkan app/tampilan/layout/kepala.html
+   ke dalam <style type="text/tailwindcss">, lalu Tailwind dari CDN (jsDelivr) membacanya
+   di browser dan membuat CSS untuk semua class yang ada di halaman.
+   Mengubah warna/komponen cukup edit file ini lalu muat ulang halaman.
+   ===================================================================== */
+
+/* Memuat Tailwind (preflight + utility). Font Inter dimuat lewat <link> Google Fonts di kepala.html. */
+@import "tailwindcss";
+
+/* Design token dari docs/design/00-panduan-ui-tailwind.png.
+   Setiap --color-* otomatis menjadi utility: bg-navy, text-slate,
+   border-garis, ring-slate, bg-gold-muda, dan seterusnya. */
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+
+  --color-navy: #17243a;        /* sidebar, teks utama, banner */
+  --color-navy-muda: #263852;   /* kotak di atas latar navy (mis. "Akses mahasiswa", kartu panel login) */
+  --color-slate: #526783;       /* teks sekunder, label pendukung, ring fokus */
+  --color-warm: #f7f8fa;        /* latar halaman, kolom pencarian */
+  --color-gold: #c5a46d;        /* tombol utama, aksen, menu aktif, isi progress bar */
+  --color-gold-muda: #f5f0e6;   /* badge peran, chip mata kuliah, label tanggal */
+  --color-garis: #e2e7ed;       /* border 1px kartu & input, track progress bar */
+  --color-hijau-muda: #e8f2ec;  /* latar lencana "Selesai" / "Disetujui" */
+  --color-hijau: #24613f;       /* teks lencana "Selesai" / "Disetujui" */
+}
+
+@layer base {
+  /* Warna border bawaan = token garis, jadi cukup menulis class "border". */
+  *,
+  ::before,
+  ::after,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-garis);
+  }
+
+  /* Ukuran isi 14/20 sesuai panduan tipografi. */
+  body {
+    @apply bg-warm font-sans text-sm text-navy antialiased;
+  }
+
+  ::selection {
+    background-color: var(--color-gold-muda);
+  }
+}
+
+/* Komponen yang dipakai berulang (docs/design/00-komponen-*.png & modal m01–m16).
+   Ditulis sebagai class biasa agar markup HTML tetap ringkas & seragam. */
+@layer components {
+  /* ---- Tombol: emas (utama), putih (sekunder), navy ---- */
+  .tombol {
+    @apply inline-flex min-h-11 items-center justify-center gap-2 rounded-lg px-5 text-center text-[15px] leading-5 font-semibold transition select-none;
+    @apply focus-visible:ring-2 focus-visible:ring-slate focus-visible:ring-offset-2 focus-visible:outline-none;
+    @apply disabled:cursor-not-allowed disabled:opacity-50;
+  }
+  .tombol-emas {
+    @apply bg-gold text-navy hover:brightness-95;
+  }
+  .tombol-putih {
+    @apply border bg-white text-navy hover:bg-warm;
+  }
+  .tombol-navy {
+    @apply bg-navy text-white hover:bg-navy-muda;
+  }
+
+  /* ---- Kartu & teks ---- */
+  .kartu {
+    @apply rounded-xl border bg-white;
+  }
+  .remah {
+    @apply text-[11px] font-bold tracking-wider text-navy uppercase;
+  }
+  .label-emas {
+    @apply text-[11px] font-bold tracking-wider text-gold uppercase;
+  }
+  .label-kecil {
+    @apply text-[11px] font-semibold tracking-wider text-slate uppercase;
+  }
+  .judul-halaman {
+    @apply text-[28px] leading-10 font-bold tracking-tight lg:text-[32px] lg:leading-[46px];
+  }
+  .judul-bagian {
+    @apply text-xl leading-[29px] font-semibold;
+  }
+  .teks-sekunder {
+    @apply text-sm leading-5 text-slate;
+  }
+  .tautan {
+    @apply font-semibold text-navy underline decoration-gold decoration-2 underline-offset-4 hover:decoration-navy;
+  }
+
+  /* ---- Form ---- */
+  .label {
+    @apply mb-2 block text-[13px] leading-[19px] font-medium text-navy;
+  }
+  .masukan {
+    @apply block min-h-11 w-full rounded-lg border bg-white px-3.5 py-2.5 text-base text-navy placeholder:text-slate/60 lg:text-[15px];
+    @apply focus:border-slate focus:ring-2 focus:ring-slate focus:outline-none;
+    @apply disabled:cursor-not-allowed disabled:bg-warm disabled:text-slate;
+  }
+  .masukan-baca {
+    @apply bg-warm text-slate;
+  }
+  .masukan-galat {
+    @apply border-red-400;
+  }
+  .bantuan {
+    @apply mt-1.5 text-xs leading-[17px] text-slate;
+  }
+  .galat-isian {
+    @apply mt-1.5 text-xs leading-[17px] font-medium text-red-700;
+  }
+
+  /* ---- Lencana (badge) ---- */
+  .lencana {
+    @apply inline-flex items-center gap-1.5 rounded-md px-2.5 py-1 text-xs leading-4 font-medium whitespace-nowrap;
+  }
+
+  /* ---- Progress bar memakai elemen <progress> (tanpa atribut style) ---- */
+  .progres {
+    @apply block h-1.5 w-full appearance-none overflow-hidden rounded-full border-0 bg-garis;
+  }
+  .progres::-webkit-progress-bar {
+    @apply rounded-full bg-garis;
+  }
+  .progres::-webkit-progress-value {
+    @apply rounded-full bg-gold;
+  }
+  .progres::-moz-progress-bar {
+    @apply rounded-full bg-gold;
+  }
+
+  /* ---- Modal <dialog> (m01–m16) ---- */
+  .modal {
+    @apply m-auto max-h-[calc(100dvh-2.5rem)] w-[calc(100%-2.5rem)] max-w-[480px] overflow-y-auto rounded-2xl bg-white p-0 text-navy shadow-2xl backdrop:bg-navy/50;
+  }
+  .modal-isi {
+    @apply p-6;
+  }
+  .modal-judul {
+    @apply mt-3 text-2xl leading-8 font-bold;
+  }
+  .modal-pesan {
+    @apply mt-3 text-[15px] leading-6 text-slate;
+  }
+}

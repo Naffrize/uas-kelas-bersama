@@ -1,0 +1,3 @@
+# Pengaturan aplikasi, termasuk koneksi.php yang berisi password database.
+# Browser tidak boleh membuka folder ini (403).
+Require all denied

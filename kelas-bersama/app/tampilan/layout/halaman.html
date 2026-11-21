@@ -1,0 +1,21 @@
+{{! =====================================================================
+    app/tampilan/layout/halaman.html — kerangka SEMUA halaman
+    Dirakit oleh tampilkanHalaman() di app/tampilan.php, urutannya:
+      kepala, lalu sidebar + topbar (khusus halaman setelah login),
+      isi halaman, navigasi bawah HP, modal konfirmasi, dan pesan flash.
+    ===================================================================== }}
+{{> layout/kepala}}
+{{#denganNavigasi}}
+{{> layout/sidebar}}
+<div class="min-h-screen lg:pl-[232px]">
+{{> layout/topbar}}
+{{/denganNavigasi}}
+{{{isiHalaman}}}
+{{#denganNavigasi}}
+</div>
+{{> layout/nav-bawah}}
+{{/denganNavigasi}}
+{{> layout/modal-konfirmasi}}
+{{> layout/flash}}
+</body>
+</html>

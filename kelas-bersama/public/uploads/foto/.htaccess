@@ -1,0 +1,14 @@
+# Foto profil (pola P10): gambar boleh ditampilkan browser,
+# tetapi skrip apa pun TIDAK boleh dijalankan dari folder ini.
+# Server hanya menyimpan nama acak: 32 heksadesimal + .jpg/.png/.webp.
+<FilesMatch "\.(?i:php\d*|phtml|phar|pl|py|cgi|jsp|asp|aspx|sh|shtml)$">
+    Require all denied
+</FilesMatch>
+
+# Tanpa daftar isi folder dan tanpa eksekusi CGI.
+Options -Indexes -ExecCGI
+
+# Browser wajib mengikuti Content-Type dari server (tidak menebak jenis file).
+<IfModule mod_headers.c>
+    Header set X-Content-Type-Options "nosniff"
+</IfModule>
