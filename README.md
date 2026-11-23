@@ -46,9 +46,12 @@ Yang dibutuhkan hanya [XAMPP](https://www.apachefriends.org) dengan PHP 8.
 2. Nyalakan Apache dan MySQL dari XAMPP Control Panel.
 3. Buka http://localhost/phpmyadmin, lalu lewat tab Import masukkan file dari
    `kelas-bersama/database/` dengan urutan berikut:
-   - `schema.sql` (membuat database `uas_kelas_bersama`)
-   - `seed.sql` (mata kuliah contoh)
+   - `schema.sql` (membuat database `uas_kelas_bersama`, sudah termasuk kolom warna mata kuliah)
+   - `seed.sql` (mata kuliah contoh beserta warnanya)
    - `demo.sql` (akun dan data demo)
+
+   Kalau database `uas_kelas_bersama` sudah ada dari versi sebelumnya, lihat
+   [Memperbarui dari versi lama](#memperbarui-dari-versi-lama).
 4. Salin pengaturan database.
 
    ```bash
@@ -62,8 +65,17 @@ Yang dibutuhkan hanya [XAMPP](https://www.apachefriends.org) dengan PHP 8.
 Kalau halaman tidak tampil dengan benar, buka `public/cek-koneksi.php`. Halaman itu menunjukkan
 bagian mana yang belum siap.
 
-Sudah memakai database dari versi sebelumnya? Impor `database/migrasi-warna-matkul.sql` sekali
-supaya kolom warna mata kuliah tersedia. Data lama tidak terhapus.
+### Memperbarui dari versi lama
+
+Versi terbaru menambahkan kolom `warna` di tabel `mata_kuliah`. Kalau kamu sudah pernah mengimpor
+database sebelumnya, tidak perlu mengulang dari awal:
+
+1. Tarik kode terbaru dengan `git pull`.
+2. Buka phpMyAdmin, tab Import, lalu impor
+   `kelas-bersama/database/migrasi-warna-matkul.sql` sekali saja.
+
+Data dan akun yang sudah ada tidak terhapus. Tanpa langkah ini, halaman akan menampilkan galat
+`Unknown column 'mk.warna'`, dan `cek-koneksi.php` menandai baris "Kolom warna mata kuliah".
 
 ## Akun demo
 
