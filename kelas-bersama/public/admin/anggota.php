@@ -45,7 +45,7 @@ $where = implode(' AND ', $kondisi);
 $jumlahTab = jalankan("SELECT p.status, COUNT(*) FROM pendaftaran p JOIN pengguna u ON u.id = p.pengguna_id
     WHERE $where AND p.status IN ('menunggu', 'disetujui') GROUP BY p.status", $parameter)->fetchAll(PDO::FETCH_KEY_PAIR);
 $paginasi = paginasi((int) ($jumlahTab[$tab] ?? 0), max(1, ambilId(ambilGet('hal'))), 15);
-$daftarAnggota = jalankan("SELECT p.id, p.status, p.diajukan, p.diputuskan, u.nama, u.email, u.foto, mk.nama AS mk_nama, mk.kode AS mk_kode
+$daftarAnggota = jalankan("SELECT p.id, p.status, p.diajukan, p.diputuskan, u.nama, u.email, u.foto, mk.nama AS mk_nama, mk.kode AS mk_kode, mk.warna AS mk_warna
     FROM pendaftaran p
     JOIN pengguna u ON u.id = p.pengguna_id
     JOIN mata_kuliah mk ON mk.id = p.mata_kuliah_id
@@ -85,6 +85,7 @@ foreach ($daftarAnggota as $baris) {
         'email' => $baris['email'],
         'mkNama' => $baris['mk_nama'],
         'mkKode' => $baris['mk_kode'],
+        'mkWarna' => warnaMatkul($baris['mk_warna']),
         'tanggal' => formatTanggalIndo($tab === 'menunggu' ? $baris['diajukan'] : $baris['diputuskan']),
     ];
 }

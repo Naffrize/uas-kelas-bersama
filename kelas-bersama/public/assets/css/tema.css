@@ -27,6 +27,28 @@
   --color-hijau: #24613f;       /* teks lencana "Selesai" / "Disetujui" */
 }
 
+/* Warna mata kuliah (dipilih admin, kolom mata_kuliah.warna).
+   Elemen ber-atribut data-warna="hijau" (dst.) mengisi tiga variabel; di HTML cukup pakai
+   class bg-mk-latar, text-mk-teks, bg-mk-aksen, border-mk-aksen. Nada warnanya sengaja kalem
+   agar serasi dengan navy & emas. Teks (--mk-teks) di atas latar (--mk-latar) lolos kontras WCAG AA. */
+@theme inline {
+  --color-mk-latar: var(--mk-latar);
+  --color-mk-aksen: var(--mk-aksen);
+  --color-mk-teks: var(--mk-teks);
+}
+
+@layer base {
+  :root,
+  [data-warna="emas"]     { --mk-latar: #f5f0e6; --mk-aksen: #c5a46d; --mk-teks: #6b5530; }
+  [data-warna="navy"]     { --mk-latar: #e8ecf3; --mk-aksen: #33496b; --mk-teks: #17243a; }
+  [data-warna="hijau"]    { --mk-latar: #e8f2ec; --mk-aksen: #4f8a68; --mk-teks: #24613f; }
+  [data-warna="toska"]    { --mk-latar: #e3f1ef; --mk-aksen: #3f8580; --mk-teks: #2a5e5a; }
+  [data-warna="biru"]     { --mk-latar: #e6eef7; --mk-aksen: #4a77a3; --mk-teks: #2c5178; }
+  [data-warna="plum"]     { --mk-latar: #f0e9f3; --mk-aksen: #85648f; --mk-teks: #5e4470; }
+  [data-warna="terakota"] { --mk-latar: #f7ebe5; --mk-aksen: #b9714f; --mk-teks: #8a4a33; }
+  [data-warna="abu"]      { --mk-latar: #eef1f5; --mk-aksen: #526783; --mk-teks: #3c4d63; }
+}
+
 @layer base {
   /* Warna border bawaan = token garis, jadi cukup menulis class "border". */
   *,

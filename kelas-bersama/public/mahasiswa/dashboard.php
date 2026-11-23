@@ -78,6 +78,7 @@ tampilkanHalaman('mahasiswa/dashboard', [
         'tanggalPill' => tanggalPill($terdekat['deadline']),
         'judul' => $terdekat['judul'],
         'mkNama' => $terdekat['mk_nama'],
+        'mkWarna' => warnaMatkul($terdekat['mk_warna']),
         'kalimatDeadline' => kalimatDeadline($terdekat['deadline']),
         'sudahDimulai' => $terdekat['status'] === 'dikerjakan',
     ] : null,

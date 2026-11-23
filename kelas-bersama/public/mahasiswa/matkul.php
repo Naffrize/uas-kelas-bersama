@@ -11,7 +11,7 @@ require __DIR__ . '/../../app/auth.php';
 $pengguna = wajibMahasiswa();
 
 // ===== BAGIAN 2: SEMUA MATA KULIAH + STATUS PENGAJUAN SAYA =====
-$query = db()->prepare("SELECT mk.id, mk.kode, mk.nama, mk.deskripsi, mk.kapasitas,
+$query = db()->prepare("SELECT mk.id, mk.kode, mk.nama, mk.deskripsi, mk.kapasitas, mk.warna,
         (SELECT COUNT(*) FROM pendaftaran pa WHERE pa.mata_kuliah_id = mk.id AND pa.status = 'disetujui') AS jumlah_anggota,
         (SELECT COUNT(*) FROM tugas t WHERE t.mata_kuliah_id = mk.id) AS jumlah_tugas,
         p.status AS status_saya, p.diajukan, p.diputuskan
@@ -32,6 +32,7 @@ foreach ($daftarMataKuliah as $baris) {
         'deskripsi' => $baris['deskripsi'],
         'jumlahAnggota' => (int) $baris['jumlah_anggota'],
         'kapasitas' => (int) $baris['kapasitas'],
+        'warna' => warnaMatkul($baris['warna']),
         'jumlahTugas' => (int) $baris['jumlah_tugas'],
         'sisa' => $sisa,
         'penuh' => $sisa === 0,

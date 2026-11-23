@@ -85,6 +85,17 @@ $hasil[] = [
 
 // 4c. Data contoh & akun admin (hanya bila tabel sudah lengkap).
 if (!$tabelKurang) {
+    // Kolom warna mata kuliah (ditambahkan setelah versi awal; database lama perlu migrasi).
+    $query = $pdo->prepare("SELECT COUNT(*) FROM information_schema.COLUMNS
+        WHERE TABLE_SCHEMA = ? AND TABLE_NAME = 'mata_kuliah' AND COLUMN_NAME = 'warna'");
+    $query->execute([$namaDatabase]);
+    $adaKolomWarna = (int) $query->fetchColumn() > 0;
+    $hasil[] = [
+        'Kolom warna mata kuliah',
+        $adaKolomWarna,
+        $adaKolomWarna ? 'Tersedia.' : 'Belum ada. Impor database/migrasi-warna-matkul.sql (data lama tidak terhapus).',
+    ];
+
     $jumlahMataKuliah = (int) $pdo->query('SELECT COUNT(*) FROM mata_kuliah')->fetchColumn();
     $hasil[] = [
         'Data contoh mata kuliah',

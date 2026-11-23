@@ -60,6 +60,7 @@ tampilkanHalaman('admin/dashboard', [
         'tanggalPill' => tanggalPill($terdekat['deadline']),
         'judul' => $terdekat['judul'],
         'mkNama' => $terdekat['mk_nama'],
+        'mkWarna' => warnaMatkul($terdekat['mk_warna']),
         'kalimatDeadline' => kalimatDeadline($terdekat['deadline']),
         'jumlahSelesai' => (int) $terdekat['jumlah_selesai'],
         'jumlahAnggota' => (int) $terdekat['jumlah_anggota'],

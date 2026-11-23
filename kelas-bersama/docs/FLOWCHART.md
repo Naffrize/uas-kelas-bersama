@@ -325,6 +325,7 @@ erDiagram
         varchar nama
         text deskripsi
         smallint kapasitas
+        enum warna "emas | navy | hijau | toska | biru | plum | terakota | abu"
         int dibuat_oleh FK
         datetime dibuat
     }

@@ -2,7 +2,7 @@
 // =====================================================================
 // public/admin/matkul-simpan.php — buat / edit mata kuliah (F-11, F-12; diagram 5)
 // Kode unik (huruf besar/angka/strip, ≤20), nama 1–100, kapasitas 1–500,
-// dan saat edit kapasitas ≥ jumlah anggota disetujui.
+// warna dari daftar WARNA_MATKUL, dan saat edit kapasitas ≥ jumlah anggota disetujui.
 // =====================================================================
 
 // ===== BAGIAN 1: KEAMANAN & GUARD =====
@@ -22,8 +22,13 @@ $nilai = [
     'kode' => strtoupper(ambilPost('kode')),
     'deskripsi' => str_replace("\r\n", "\n", ambilPost('deskripsi')),
     'kapasitas' => ambilPost('kapasitas'),
+    'warna' => ambilPost('warna'),
 ];
 $galat = [];
+// Warna hanya boleh dari daftar pilihan (kosong = pakai warna lama / emas, lihat di bawah).
+if ($nilai['warna'] !== '' && !array_key_exists($nilai['warna'], WARNA_MATKUL)) {
+    $galat['warna'] = 'Pilih salah satu warna yang tersedia.';
+}
 if ($nilai['nama'] === '' || mb_strlen($nilai['nama']) > 100) {
     $galat['nama'] = 'Nama mata kuliah wajib diisi, maksimal 100 karakter.';
 }
@@ -44,11 +49,15 @@ try {
 
     // Mode edit: kunci baris mata kuliah agar tidak bersamaan dengan persetujuan anggota.
     if ($idMataKuliah > 0) {
-        $query = $pdo->prepare('SELECT id FROM mata_kuliah WHERE id = ? FOR UPDATE');
+        $query = $pdo->prepare('SELECT id, warna FROM mata_kuliah WHERE id = ? FOR UPDATE');
         $query->execute([$idMataKuliah]);
-        if (!$query->fetch()) {
+        $lama = $query->fetch();
+        if (!$lama) {
             $pdo->rollBack();
             tidakDitemukan('Mata kuliah tidak ditemukan.');
+        }
+        if ($nilai['warna'] === '') {
+            $nilai['warna'] = $lama['warna'];
         }
         $anggota = jumlahAnggotaDisetujui($idMataKuliah);
         if ($kapasitas !== false && $kapasitas < $anggota) {
@@ -74,12 +83,13 @@ try {
 
     // ===== BAGIAN 3: SIMPAN =====
     $deskripsi = trim($nilai['deskripsi']) === '' ? null : $nilai['deskripsi'];
+    $warna = $nilai['warna'] === '' ? 'emas' : $nilai['warna'];
     if ($idMataKuliah > 0) {
-        $query = $pdo->prepare('UPDATE mata_kuliah SET kode = ?, nama = ?, deskripsi = ?, kapasitas = ? WHERE id = ?');
-        $query->execute([$nilai['kode'], $nilai['nama'], $deskripsi, $kapasitas, $idMataKuliah]);
+        $query = $pdo->prepare('UPDATE mata_kuliah SET kode = ?, nama = ?, deskripsi = ?, kapasitas = ?, warna = ? WHERE id = ?');
+        $query->execute([$nilai['kode'], $nilai['nama'], $deskripsi, $kapasitas, $warna, $idMataKuliah]);
     } else {
-        $query = $pdo->prepare('INSERT INTO mata_kuliah (kode, nama, deskripsi, kapasitas, dibuat_oleh) VALUES (?, ?, ?, ?, ?)');
-        $query->execute([$nilai['kode'], $nilai['nama'], $deskripsi, $kapasitas, $pengguna['id']]);
+        $query = $pdo->prepare('INSERT INTO mata_kuliah (kode, nama, deskripsi, kapasitas, warna, dibuat_oleh) VALUES (?, ?, ?, ?, ?, ?)');
+        $query->execute([$nilai['kode'], $nilai['nama'], $deskripsi, $kapasitas, $warna, $pengguna['id']]);
     }
     $pdo->commit();
 } catch (PDOException $e) {

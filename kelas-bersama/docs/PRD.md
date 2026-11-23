@@ -96,6 +96,7 @@ Prioritas: **W** = wajib (Must), **S** = sebaiknya (Should), **O** = opsional (C
 | F-11 | Tambah mata kuliah (modal "Buat mata kuliah"): kode (unik, huruf besar/angka/strip, ≤20), nama (≤100), deskripsi (opsional), kapasitas bilangan bulat 1–500 (default 40). | W |
 | F-12 | Edit mata kuliah; kapasitas tidak boleh lebih kecil dari jumlah anggota disetujui. | W |
 | F-13 | Hapus mata kuliah dengan modal konfirmasi; ikut menghapus tugas, pendaftaran, progres, dan file terkait (file dihapus setelah transaksi DB sukses). | W |
+| F-14 | Warna mata kuliah (tambahan keputusan kelompok): admin memilih satu dari 8 warna bernada kalem saat buat/edit; warna dipakai sebagai latar kepala kartu mata kuliah dan penanda di daftar tugas, detail tugas, dan daftar anggota. | S |
 
 ### 6.3 Pendaftaran mata kuliah & persetujuan
 | ID | Kebutuhan | Prio |

@@ -260,6 +260,8 @@ function semesterSekarang(): string
 const LABEL_PROGRES = ['belum_mulai' => 'Belum mulai', 'dikerjakan' => 'Sedang dikerjakan', 'selesai' => 'Selesai'];
 const PERSEN_PROGRES = ['belum_mulai' => 0, 'dikerjakan' => 60, 'selesai' => 100];
 const LABEL_PENDAFTARAN = ['menunggu' => 'Menunggu persetujuan', 'disetujui' => 'Disetujui', 'ditolak' => 'Ditolak', 'dikeluarkan' => 'Dikeluarkan'];
+// Pilihan warna mata kuliah (kolom mata_kuliah.warna). Kode warnanya ada di public/assets/css/tema.css.
+const WARNA_MATKUL = ['emas' => 'Emas', 'navy' => 'Navy', 'hijau' => 'Hijau', 'toska' => 'Toska', 'biru' => 'Biru', 'plum' => 'Plum', 'terakota' => 'Terakota', 'abu' => 'Abu'];
 
 function namaDepan(string $nama): string
 {

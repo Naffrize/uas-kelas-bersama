@@ -12,7 +12,7 @@ require __DIR__ . '/../../app/auth.php';
 $pengguna = wajibAdmin();
 
 // ===== BAGIAN 2: DAFTAR MATA KULIAH + JUMLAH ANGGOTA/PENGAJUAN/TUGAS =====
-$daftarMataKuliah = db()->query("SELECT mk.id, mk.kode, mk.nama, mk.deskripsi, mk.kapasitas,
+$daftarMataKuliah = db()->query("SELECT mk.id, mk.kode, mk.nama, mk.deskripsi, mk.kapasitas, mk.warna,
         (SELECT COUNT(*) FROM pendaftaran p WHERE p.mata_kuliah_id = mk.id AND p.status = 'disetujui') AS jumlah_anggota,
         (SELECT COUNT(*) FROM pendaftaran p WHERE p.mata_kuliah_id = mk.id AND p.status = 'menunggu') AS jumlah_menunggu,
         (SELECT COUNT(*) FROM tugas t WHERE t.mata_kuliah_id = mk.id) AS jumlah_tugas
@@ -27,6 +27,7 @@ foreach ($daftarMataKuliah as $baris) {
         'nama' => $baris['nama'],
         'deskripsi' => $baris['deskripsi'],
         'kapasitas' => (int) $baris['kapasitas'],
+        'warna' => warnaMatkul($baris['warna']),
         'jumlahAnggota' => (int) $baris['jumlah_anggota'],
         'jumlahMenunggu' => (int) $baris['jumlah_menunggu'],
         'jumlahTugas' => (int) $baris['jumlah_tugas'],
@@ -40,17 +41,21 @@ $formLama = ambilFormLama();
 $siapkanForm = function (string $idModal, ?array $mataKuliah) use ($formLama): array {
     $namaForm = $mataKuliah ? 'matkul-' . $mataKuliah['id'] : 'matkul-baru';
     $dariFormLama = $formLama['nama'] === $namaForm;
+    $nilai = $dariFormLama ? $formLama['nilai'] : [
+        'nama' => $mataKuliah['nama'] ?? '',
+        'kode' => $mataKuliah['kode'] ?? '',
+        'deskripsi' => $mataKuliah['deskripsi'] ?? '',
+        'kapasitas' => (string) ($mataKuliah['kapasitas'] ?? 40),
+        'warna' => $mataKuliah['warna'] ?? 'emas',
+    ];
     return [
         'idModal' => $idModal,
         'mataKuliah' => $mataKuliah,
         'bukaSaatMuat' => $dariFormLama,
         'galat' => $dariFormLama ? $formLama['galat'] : [],
-        'nilai' => $dariFormLama ? $formLama['nilai'] : [
-            'nama' => $mataKuliah['nama'] ?? '',
-            'kode' => $mataKuliah['kode'] ?? '',
-            'deskripsi' => $mataKuliah['deskripsi'] ?? '',
-            'kapasitas' => (string) ($mataKuliah['kapasitas'] ?? 40),
-        ],
+        'nilai' => $nilai,
+        // Pilihan warna kartu (radio bergambar bulatan warna).
+        'pilihanWarna' => dataOpsi(WARNA_MATKUL, warnaMatkul($nilai['warna'] ?? 'emas')),
     ];
 };
 $daftarModalForm = [$siapkanForm('modal-buat-matkul', null)];

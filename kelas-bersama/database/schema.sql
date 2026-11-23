@@ -54,6 +54,7 @@ CREATE TABLE pengguna (
 --    dibuat_oleh boleh NULL: mata kuliah contoh di seed.sql dibuat tanpa
 --    akun (ROADMAP Fase 0), dan bila akun pembuat terhapus datanya tetap ada.
 --    Kapasitas 1–500 divalidasi di PHP; CHECK di bawah adalah lapisan kedua.
+--    warna: dipilih admin; nilai warnanya diatur di public/assets/css/tema.css.
 -- ---------------------------------------------------------------------
 CREATE TABLE mata_kuliah (
     id          INT UNSIGNED      NOT NULL AUTO_INCREMENT,
@@ -61,6 +62,8 @@ CREATE TABLE mata_kuliah (
     nama        VARCHAR(100)      NOT NULL,
     deskripsi   TEXT              NULL,
     kapasitas   SMALLINT UNSIGNED NOT NULL DEFAULT 40,         -- batas anggota berstatus 'disetujui' (R-04)
+    warna       ENUM('emas','navy','hijau','toska','biru','plum','terakota','abu')
+                                  NOT NULL DEFAULT 'emas',     -- warna kartu & penanda mata kuliah
     dibuat_oleh INT UNSIGNED      NULL,                        -- admin pembuat; NULL = data contoh dari seed
     dibuat      DATETIME          NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (id),

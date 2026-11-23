@@ -18,44 +18,50 @@
     {{#adaMataKuliah}}
         <ul class="mt-8 grid gap-4 lg:grid-cols-2 lg:gap-6">
             {{#daftarMataKuliah}}
-                <li class="kartu flex flex-col p-6">
-                    <div class="flex flex-wrap items-center justify-between gap-3">
-                        <p class="label-kecil">Kode MK · {{kode}}</p>
-                        {{#pendaftaran}}{{> komponen/lencana-pendaftaran}}{{/pendaftaran}}
+                <li class="kartu flex flex-col overflow-hidden" data-warna="{{warna}}">
+                    <!-- Kepala kartu berwarna sesuai pilihan admin -->
+                    <div class="border-b border-mk-aksen/25 bg-mk-latar px-6 pb-5 pt-6">
+                        <div class="flex items-center justify-between gap-3">
+                            <p class="label-kecil text-mk-teks">Kode MK · {{kode}}</p>
+                            <span class="size-3 shrink-0 rounded-full bg-mk-aksen" aria-hidden="true"></span>
+                        </div>
+                        <h2 class="mt-3 text-2xl font-bold leading-8">{{nama}}</h2>
                     </div>
-                    <h2 class="mt-4 text-2xl font-bold leading-8">{{nama}}</h2>
-                    {{#deskripsi}}
-                        <p class="mt-3 text-sm leading-[22px] text-slate">{{deskripsi}}</p>
-                    {{/deskripsi}}
-                    <p class="mt-4 text-[15px] font-semibold">
-                        {{jumlahAnggota}} / {{kapasitas}} anggota ·
-                        {{#penuh}}Kuota penuh{{/penuh}}{{^penuh}}{{sisa}} tempat tersedia{{/penuh}}
-                    </p>
-                    <p class="mt-1 text-xs text-slate">{{jumlahTugas}} tugas · {{keterangan}}</p>
+                    <div class="flex flex-1 flex-col p-6 pt-5">
+                        <p>{{#pendaftaran}}{{> komponen/lencana-pendaftaran}}{{/pendaftaran}}</p>
+                        {{#deskripsi}}
+                            <p class="mt-3 text-sm leading-[22px] text-slate">{{deskripsi}}</p>
+                        {{/deskripsi}}
+                        <p class="mt-4 text-[15px] font-semibold">
+                            {{jumlahAnggota}} / {{kapasitas}} anggota ·
+                            {{#penuh}}Kuota penuh{{/penuh}}{{^penuh}}{{sisa}} tempat tersedia{{/penuh}}
+                        </p>
+                        <p class="mt-1 text-xs text-slate">{{jumlahTugas}} tugas · {{keterangan}}</p>
 
-                    <div class="mt-auto flex flex-col gap-3 pt-6 sm:flex-row">
-                        {{#pendaftaran.disetujui}}
-                            <a href="{{dasar}}mahasiswa/tugas.php?mk={{id}}" class="tombol tombol-emas sm:flex-1">Lihat tugas <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" class="size-4" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/></svg></a>
-                        {{/pendaftaran.disetujui}}
-                        {{#pendaftaran.menunggu}}
-                            <form method="post" action="{{dasar}}mahasiswa/matkul-aksi.php" class="sm:flex-1"
-                                  data-konfirmasi data-judul="Batalkan pengajuan?" data-pesan="Pengajuan gabung ke {{nama}} akan dihapus. Kamu bisa mengajukan lagi nanti." data-tombol="Ya, batalkan">
-                                <input type="hidden" name="csrf" value="{{csrf}}">
-                                <input type="hidden" name="aksi" value="batal">
-                                <input type="hidden" name="mk" value="{{id}}">
-                                <button type="submit" class="tombol tombol-putih w-full">Batalkan pengajuan</button>
-                            </form>
-                        {{/pendaftaran.menunggu}}
-                        {{#bisaAjukan}}
-                            <form method="post" action="{{dasar}}mahasiswa/matkul-aksi.php" class="sm:flex-1">
-                                <input type="hidden" name="csrf" value="{{csrf}}">
-                                <input type="hidden" name="aksi" value="ajukan">
-                                <input type="hidden" name="mk" value="{{id}}">
-                                <button type="submit" class="tombol tombol-emas w-full" {{#penuh}}disabled{{/penuh}}>
-                                    {{#penuh}}Kuota penuh{{/penuh}}{{^penuh}}{{#pendaftaran.belumGabung}}Ajukan gabung{{/pendaftaran.belumGabung}}{{^pendaftaran.belumGabung}}Ajukan ulang{{/pendaftaran.belumGabung}}{{/penuh}}
-                                </button>
-                            </form>
-                        {{/bisaAjukan}}
+                        <div class="mt-auto flex flex-col gap-3 pt-6 sm:flex-row">
+                            {{#pendaftaran.disetujui}}
+                                <a href="{{dasar}}mahasiswa/tugas.php?mk={{id}}" class="tombol tombol-emas sm:flex-1">Lihat tugas <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" class="size-4" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/></svg></a>
+                            {{/pendaftaran.disetujui}}
+                            {{#pendaftaran.menunggu}}
+                                <form method="post" action="{{dasar}}mahasiswa/matkul-aksi.php" class="sm:flex-1"
+                                      data-konfirmasi data-judul="Batalkan pengajuan?" data-pesan="Pengajuan gabung ke {{nama}} akan dihapus. Kamu bisa mengajukan lagi nanti." data-tombol="Ya, batalkan">
+                                    <input type="hidden" name="csrf" value="{{csrf}}">
+                                    <input type="hidden" name="aksi" value="batal">
+                                    <input type="hidden" name="mk" value="{{id}}">
+                                    <button type="submit" class="tombol tombol-putih w-full">Batalkan pengajuan</button>
+                                </form>
+                            {{/pendaftaran.menunggu}}
+                            {{#bisaAjukan}}
+                                <form method="post" action="{{dasar}}mahasiswa/matkul-aksi.php" class="sm:flex-1">
+                                    <input type="hidden" name="csrf" value="{{csrf}}">
+                                    <input type="hidden" name="aksi" value="ajukan">
+                                    <input type="hidden" name="mk" value="{{id}}">
+                                    <button type="submit" class="tombol tombol-emas w-full" {{#penuh}}disabled{{/penuh}}>
+                                        {{#penuh}}Kuota penuh{{/penuh}}{{^penuh}}{{#pendaftaran.belumGabung}}Ajukan gabung{{/pendaftaran.belumGabung}}{{^pendaftaran.belumGabung}}Ajukan ulang{{/pendaftaran.belumGabung}}{{/penuh}}
+                                    </button>
+                                </form>
+                            {{/bisaAjukan}}
+                        </div>
                     </div>
                 </li>
             {{/daftarMataKuliah}}

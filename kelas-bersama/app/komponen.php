@@ -58,6 +58,12 @@ function dataPendaftaran(?string $status): array
     ];
 }
 
+// Warna mata kuliah untuk atribut data-warna="..." (warna tak dikenal → emas).
+function warnaMatkul(?string $warna): string
+{
+    return array_key_exists((string) $warna, WARNA_MATKUL) ? (string) $warna : 'emas';
+}
+
 // ===== BAGIAN 3: FORM =====
 
 // Pilihan <select>: [nilai => label] → daftar {nilai, label, terpilih} untuk <option>.
@@ -130,6 +136,7 @@ function dataBarisTugasMahasiswa(array $baris): array
         'id' => (int) $baris['id'],
         'judul' => $baris['judul'],
         'mkNama' => $baris['mk_nama'],
+        'mkWarna' => warnaMatkul($baris['mk_warna']),
         'deadline' => labelDeadline($baris['deadline']),
         'terlewat' => sudahLewat($baris['deadline']) && $baris['status'] !== 'selesai', // F-36
         'centang' => $baris['status'] === 'selesai',
@@ -145,6 +152,7 @@ function dataBarisTugasAdmin(array $baris): array
         'judul' => $baris['judul'],
         'mkNama' => $baris['mk_nama'],
         'mkKode' => $baris['mk_kode'],
+        'mkWarna' => warnaMatkul($baris['mk_warna']),
         'deadline' => labelDeadline($baris['deadline']),
         'terlewat' => sudahLewat($baris['deadline']),
         'jumlahSelesai' => (int) $baris['jumlah_selesai'],

@@ -9,8 +9,8 @@
     <h1 class="judul-halaman mt-6">Detail tugas</h1>
 
     <!-- Kepala tugas -->
-    <section class="kartu mt-6 p-6 lg:p-7" aria-labelledby="judul-tugas">
-        <p><span class="lencana bg-gold-muda px-4 py-1.5 uppercase tracking-wide text-navy lg:min-w-72 lg:justify-center">{{tugas.mk_nama}}</span></p>
+    <section class="kartu mt-6 border-t-4 border-t-mk-aksen p-6 lg:p-7" aria-labelledby="judul-tugas" data-warna="{{tugas.mk_warna}}">
+        <p><span class="lencana bg-mk-latar px-4 py-1.5 uppercase tracking-wide text-mk-teks lg:min-w-72 lg:justify-center">{{tugas.mk_nama}}</span></p>
         <h2 id="judul-tugas" class="mt-5 text-[30px] font-bold leading-[38px] tracking-tight lg:text-[40px] lg:leading-[48px]">{{tugas.judul}}</h2>
         <p class="mt-4 text-[13px] text-slate">Ditambahkan {{info.pembuat}} · {{info.dibuat}} · <span class="whitespace-nowrap">{{tugas.mk_kode}}</span></p>
         <p class="mt-4 flex flex-wrap items-center gap-3 text-[15px] font-semibold">

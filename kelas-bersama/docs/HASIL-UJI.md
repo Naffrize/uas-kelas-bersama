@@ -6,7 +6,8 @@
 | Lingkungan | Windows 11 · XAMPP (Apache 2.4, PHP 8.2.12, MariaDB 10.4.32) · Microsoft Edge (Chromium) |
 | Data awal | `database/schema.sql` + `seed.sql` + `demo.sql` |
 | Metode | (1) Skrip otomatis `curl` yang menjalankan alur nyata lewat Apache — lengkap dengan cookie session & token CSRF — lalu memeriksa kode HTTP, isi halaman, isi database, dan file di folder unggahan. (2) Uji perilaku JavaScript di browser sungguhan (Edge headless): klik, pilih file, kirim form. (3) Tangkapan layar 1440 px & 390 px untuk tampilan. |
-| Hasil | **97 pemeriksaan server lulus · 24 pemeriksaan JavaScript lulus (online & offline) · 0 gagal** |
+| Hasil | **97 pemeriksaan server lulus · 25 pemeriksaan JavaScript lulus (online & offline) · 0 gagal** |
+| Warna mata kuliah (F-14) | Dibuat dengan warna plum → tersimpan; diedit ke toska → tersimpan; nilai palsu (`merah" onmouseover="x`) ditolak dengan pesan galat, modal terbuka lagi, atribut tidak bocor ke HTML; edit tanpa kiriman warna → warna lama tetap. Modal edit menandai warna saat ini. Migrasi `migrasi-warna-matkul.sql` aman dijalankan dua kali. |
 | Uji ulang | Dijalankan lagi setelah tampilan diubah menjadi file **HTML murni** (`app/tampilan/*.html`) dan Tailwind dimuat dari **CDN**. HTML 77 keadaan halaman (semua peran, galat validasi, flash, paginasi, 403/404/400) direkam sebelum & sesudah lalu dibandingkan: isinya sama. Perbedaan hanya yang disengaja: `<head>` (CDN + tema), deskripsi tugas memakai `whitespace-pre-line` sebagai ganti `<br>`, dan tautan "Lewati ke konten" di cek-koneksi. Tangkapan layar desktop & HP identik dengan versi sebelumnya. |
 
 ## 1. Skenario PRD bagian 11
@@ -61,6 +62,7 @@ Validasi tugas (judul kosong, tanggal 31 Februari) dengan isian tetap terisi · 
 |---|---|
 | Tailwind CDN aktif: latar body = warna tema `warm`, komponen `.kartu` (sudut 12px, border `garis`) diterapkan | Lulus |
 | Tanpa internet (CDN & Google Fonts diblokir): salinan lokal Tailwind dimuat otomatis, semua pemeriksaan tetap lulus | Lulus |
+| Warna mata kuliah tampil di browser: detail tugas RPL ber-garis atas hijau `#4f8a68`, label latar `#e8f2ec` | Lulus |
 | Form ber-`data-konfirmasi` membuka modal dulu, tidak langsung terkirim | Lulus |
 | Judul & tombol modal mengikuti `data-judul` / `data-tombol` | Lulus |
 | Tombol Batal & klik latar gelap menutup modal | Lulus |

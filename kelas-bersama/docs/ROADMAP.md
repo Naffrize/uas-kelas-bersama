@@ -191,6 +191,10 @@ Kerjakan Fase 9 dari @docs/ROADMAP.md.
       cadangan offline otomatis (`tailwind-cadangan.js` + `js/vendor/`); Node & build tidak diperlukan
 - [x] HTML 77 keadaan halaman dibandingkan sebelum/sesudah: isinya sama (kecuali perubahan yang disengaja)
 - [x] Uji ulang: 97 pemeriksaan server + 24 pemeriksaan JavaScript lulus (online & offline)
+- [x] Logo baru (lambang dipotong pas) di semua halaman + favicon
+- [x] Warna mata kuliah (F-14): kolom `warna`, pemilih warna di modal, kartu & penanda berwarna;
+      `database/migrasi-warna-matkul.sql` untuk database lama
+- [x] README dipindah ke akar repo dan diringkas; catatan teknis di `docs/PANDUAN-PENGEMBANG.md`
 
 ---
 

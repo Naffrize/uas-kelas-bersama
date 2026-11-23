@@ -154,7 +154,7 @@ function daftarTugasMahasiswa(int $idPengguna, array $filter, int $hal, int $per
     $dasar = array_merge([$idPengguna, $idPengguna], $parameter);
 
     $halaman = paginasi((int) jalankan("SELECT COUNT(*) $dari", $dasar)->fetchColumn(), $hal, $perHalaman);
-    $baris = jalankan("SELECT t.id, t.judul, t.deadline, mk.id AS mk_id, mk.nama AS mk_nama, mk.kode AS mk_kode,
+    $baris = jalankan("SELECT t.id, t.judul, t.deadline, mk.id AS mk_id, mk.nama AS mk_nama, mk.kode AS mk_kode, mk.warna AS mk_warna,
             COALESCE(tm.status, 'belum_mulai') AS status, (tm.hasil_file IS NOT NULL) AS ada_hasil
         $dari ORDER BY " . urutanTugas($filter['urut']) . ' LIMIT ? OFFSET ?',
         array_merge($dasar, [$halaman['perHalaman'], $halaman['offset']]))->fetchAll();
@@ -169,7 +169,7 @@ function daftarTugasAdmin(array $filter, int $hal, int $perHalaman): array
     $dari = "FROM tugas t JOIN mata_kuliah mk ON mk.id = t.mata_kuliah_id WHERE $kondisi";
 
     $halaman = paginasi((int) jalankan("SELECT COUNT(*) $dari", $parameter)->fetchColumn(), $hal, $perHalaman);
-    $baris = jalankan("SELECT t.id, t.judul, t.deadline, mk.id AS mk_id, mk.nama AS mk_nama, mk.kode AS mk_kode,
+    $baris = jalankan("SELECT t.id, t.judul, t.deadline, mk.id AS mk_id, mk.nama AS mk_nama, mk.kode AS mk_kode, mk.warna AS mk_warna,
             (SELECT COUNT(*) FROM pendaftaran pa
                 WHERE pa.mata_kuliah_id = t.mata_kuliah_id AND pa.status = 'disetujui') AS jumlah_anggota,
             (SELECT COUNT(*) FROM tugas_mahasiswa tm
@@ -187,7 +187,7 @@ function daftarTugasAdmin(array $filter, int $hal, int $perHalaman): array
 // kuliah yang disetujui untuk mahasiswa ini (U-08 → 404). ID mahasiswa dari session.
 function tugasUntukMahasiswa(int $idTugas, int $idPengguna): ?array
 {
-    $query = db()->prepare("SELECT t.*, mk.nama AS mk_nama, mk.kode AS mk_kode, pb.nama AS pembuat_nama,
+    $query = db()->prepare("SELECT t.*, mk.nama AS mk_nama, mk.kode AS mk_kode, mk.warna AS mk_warna, pb.nama AS pembuat_nama,
             COALESCE(tm.status, 'belum_mulai') AS status, tm.hasil_file, tm.hasil_nama, tm.hasil_mime, tm.hasil_ukuran, tm.diunggah
         FROM tugas t
         JOIN mata_kuliah mk ON mk.id = t.mata_kuliah_id
@@ -201,7 +201,7 @@ function tugasUntukMahasiswa(int $idTugas, int $idPengguna): ?array
 
 function tugasUntukAdmin(int $idTugas): ?array
 {
-    $query = db()->prepare('SELECT t.*, mk.nama AS mk_nama, mk.kode AS mk_kode, pb.nama AS pembuat_nama
+    $query = db()->prepare('SELECT t.*, mk.nama AS mk_nama, mk.kode AS mk_kode, mk.warna AS mk_warna, pb.nama AS pembuat_nama
         FROM tugas t
         JOIN mata_kuliah mk ON mk.id = t.mata_kuliah_id
         LEFT JOIN pengguna pb ON pb.id = t.dibuat_oleh
@@ -229,7 +229,7 @@ function statistikMahasiswa(int $idPengguna): array
 // Tugas belum selesai dengan deadline terdekat (F-63).
 function tugasTerdekatMahasiswa(int $idPengguna): ?array
 {
-    $query = db()->prepare("SELECT t.id, t.judul, t.deadline, mk.nama AS mk_nama, COALESCE(tm.status, 'belum_mulai') AS status
+    $query = db()->prepare("SELECT t.id, t.judul, t.deadline, mk.nama AS mk_nama, mk.warna AS mk_warna, COALESCE(tm.status, 'belum_mulai') AS status
         FROM tugas t
         JOIN mata_kuliah mk ON mk.id = t.mata_kuliah_id
         JOIN pendaftaran p ON p.mata_kuliah_id = t.mata_kuliah_id AND p.pengguna_id = ? AND p.status = 'disetujui'
@@ -253,7 +253,7 @@ function statistikAdmin(): array
 // Tugas mendatang dengan deadline terdekat + jumlah anggota yang sudah selesai.
 function tugasTerdekatAdmin(): ?array
 {
-    $baris = db()->query("SELECT t.id, t.judul, t.deadline, mk.nama AS mk_nama,
+    $baris = db()->query("SELECT t.id, t.judul, t.deadline, mk.nama AS mk_nama, mk.warna AS mk_warna,
             (SELECT COUNT(*) FROM pendaftaran pa WHERE pa.mata_kuliah_id = t.mata_kuliah_id AND pa.status = 'disetujui') AS jumlah_anggota,
             (SELECT COUNT(*) FROM tugas_mahasiswa tm
                 JOIN pendaftaran pa ON pa.pengguna_id = tm.pengguna_id AND pa.mata_kuliah_id = t.mata_kuliah_id AND pa.status = 'disetujui'

@@ -23,31 +23,39 @@
     {{#adaMataKuliah}}
         <ul class="mt-6 grid gap-4 lg:grid-cols-2 lg:gap-6">
             {{#daftarMataKuliah}}
-                <li class="kartu flex flex-col p-6">
-                    <p class="label-kecil">{{#penuh}}Kapasitas penuh{{/penuh}}{{^penuh}}Mata kuliah tersedia{{/penuh}}</p>
-                    <h3 class="mt-3 text-2xl font-bold leading-8">{{nama}}</h3>
-                    <p class="mt-3 text-[15px] font-medium">Kode MK: {{kode}}</p>
-                    {{#deskripsi}}
-                        <p class="mt-2 line-clamp-2 text-sm leading-[22px] text-slate">{{deskripsi}}</p>
-                    {{/deskripsi}}
-                    <p class="mt-3 text-[15px] text-slate">
-                        {{jumlahAnggota}} / {{kapasitas}} anggota ·
-                        {{jumlahTugas}} tugas
-                    </p>
-                    {{#jumlahMenunggu}}
-                        <p class="mt-3"><span class="lencana bg-gold-muda text-navy">{{jumlahMenunggu}} pengajuan menunggu</span></p>
-                    {{/jumlahMenunggu}}
-                    <div class="mt-auto grid gap-3 pt-6 sm:grid-cols-[1.4fr_1fr_1fr]">
-                        <a href="{{dasar}}admin/anggota.php?mk={{id}}&amp;tab={{#jumlahMenunggu}}menunggu{{/jumlahMenunggu}}{{^jumlahMenunggu}}disetujui{{/jumlahMenunggu}}" class="tombol tombol-emas px-3">Lihat anggota</a>
-                        <button type="button" class="tombol tombol-putih px-3" data-buka-modal="modal-edit-matkul-{{id}}">Edit</button>
-                        <form method="post" action="{{dasar}}admin/matkul-hapus.php"
-                              data-konfirmasi data-judul="Hapus mata kuliah ini?"
-                              data-pesan="{{nama}} beserta {{jumlahTugas}} tugas, pendaftaran anggota, progres, dan file hasil kerjanya akan dihapus permanen. Pastikan mata kuliah sudah tidak digunakan."
-                              data-tombol="Ya, hapus mata kuliah">
-                            <input type="hidden" name="csrf" value="{{csrf}}">
-                            <input type="hidden" name="id" value="{{id}}">
-                            <button type="submit" class="tombol tombol-putih w-full px-3">Hapus</button>
-                        </form>
+                <li class="kartu flex flex-col overflow-hidden" data-warna="{{warna}}">
+                    <!-- Kepala kartu berwarna sesuai pilihan admin -->
+                    <div class="border-b border-mk-aksen/25 bg-mk-latar px-6 pb-5 pt-6">
+                        <div class="flex items-center justify-between gap-3">
+                            <p class="label-kecil text-mk-teks">{{#penuh}}Kapasitas penuh{{/penuh}}{{^penuh}}Mata kuliah tersedia{{/penuh}}</p>
+                            <span class="size-3 shrink-0 rounded-full bg-mk-aksen" aria-hidden="true"></span>
+                        </div>
+                        <h3 class="mt-3 text-2xl font-bold leading-8">{{nama}}</h3>
+                        <p class="mt-2 text-[15px] font-medium text-mk-teks">Kode MK: {{kode}}</p>
+                    </div>
+                    <div class="flex flex-1 flex-col p-6 pt-5">
+                        {{#deskripsi}}
+                            <p class="mb-3 line-clamp-2 text-sm leading-[22px] text-slate">{{deskripsi}}</p>
+                        {{/deskripsi}}
+                        <p class="text-[15px] text-slate">
+                            {{jumlahAnggota}} / {{kapasitas}} anggota ·
+                            {{jumlahTugas}} tugas
+                        </p>
+                        {{#jumlahMenunggu}}
+                            <p class="mt-3"><span class="lencana bg-gold-muda text-navy">{{jumlahMenunggu}} pengajuan menunggu</span></p>
+                        {{/jumlahMenunggu}}
+                        <div class="mt-auto grid gap-3 pt-6 sm:grid-cols-[1.4fr_1fr_1fr]">
+                            <a href="{{dasar}}admin/anggota.php?mk={{id}}&amp;tab={{#jumlahMenunggu}}menunggu{{/jumlahMenunggu}}{{^jumlahMenunggu}}disetujui{{/jumlahMenunggu}}" class="tombol tombol-emas px-3">Lihat anggota</a>
+                            <button type="button" class="tombol tombol-putih px-3" data-buka-modal="modal-edit-matkul-{{id}}">Edit</button>
+                            <form method="post" action="{{dasar}}admin/matkul-hapus.php"
+                                  data-konfirmasi data-judul="Hapus mata kuliah ini?"
+                                  data-pesan="{{nama}} beserta {{jumlahTugas}} tugas, pendaftaran anggota, progres, dan file hasil kerjanya akan dihapus permanen. Pastikan mata kuliah sudah tidak digunakan."
+                                  data-tombol="Ya, hapus mata kuliah">
+                                <input type="hidden" name="csrf" value="{{csrf}}">
+                                <input type="hidden" name="id" value="{{id}}">
+                                <button type="submit" class="tombol tombol-putih w-full px-3">Hapus</button>
+                            </form>
+                        </div>
                     </div>
                 </li>
             {{/daftarMataKuliah}}
@@ -90,6 +98,22 @@
                     <p class="bantuan">Wajib 1–500. Tidak kurang dari jumlah anggota aktif{{#mataKuliah}} ({{mataKuliah.jumlahAnggota}} orang){{/mataKuliah}}.</p>
                     {{#galat.kapasitas}}<p class="galat-isian" id="galat-kapasitas">{{galat.kapasitas}}</p>{{/galat.kapasitas}}
                 </div>
+                <fieldset>
+                    <legend class="label">Warna kartu</legend>
+                    <div class="flex flex-wrap gap-3">
+                        {{#pilihanWarna}}
+                            <label class="relative cursor-pointer" title="{{label}}">
+                                <input type="radio" name="warna" value="{{nilai}}" class="peer sr-only" {{#terpilih}}checked{{/terpilih}}>
+                                <span data-warna="{{nilai}}" class="flex size-10 items-center justify-center rounded-full border border-mk-aksen/40 bg-mk-latar transition peer-checked:ring-2 peer-checked:ring-navy peer-checked:ring-offset-2 peer-focus-visible:ring-2 peer-focus-visible:ring-slate peer-focus-visible:ring-offset-2">
+                                    <span class="size-4 rounded-full bg-mk-aksen"></span>
+                                </span>
+                                <span class="sr-only">{{label}}</span>
+                            </label>
+                        {{/pilihanWarna}}
+                    </div>
+                    <p class="bantuan">Menjadi latar kartu dan penanda mata kuliah ini di daftar tugas.</p>
+                    {{#galat.warna}}<p class="galat-isian" id="galat-warna">{{galat.warna}}</p>{{/galat.warna}}
+                </fieldset>
             </div>
             <div class="mt-6 grid gap-4">
                 <button type="submit" class="tombol tombol-emas w-full">{{#mataKuliah}}Simpan perubahan{{/mataKuliah}}{{^mataKuliah}}Buat mata kuliah{{/mataKuliah}}</button>
