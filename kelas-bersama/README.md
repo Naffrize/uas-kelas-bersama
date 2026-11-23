@@ -91,7 +91,8 @@ kelas-bersama/
 │   ├── admin/          dashboard, tugas(+form/simpan/hapus/detail), matkul(+simpan/hapus), anggota(+aksi)
 │   ├── mahasiswa/      dashboard, tugas, tugas-detail, progres-simpan, hasil-unggah/hapus, matkul(+aksi)
 │   ├── assets/         css/tema.css (tema Tailwind), js/app.js, js/tailwind-cadangan.js,
-│   │                   js/vendor/ (salinan Tailwind untuk offline), favicon.svg
+│   │                   js/vendor/ (salinan Tailwind untuk offline),
+│   │                   img/ (logo: logo-kb.png asli, logo-kb-ikon.png lambang saja)
 │   ├── uploads/foto/   foto profil (.htaccess menolak eksekusi skrip)
 │   └── index.php, login.php, register.php, logout.php, profil*.php, unduh.php, cek-koneksi.php
 ├── storage/            uploads/lampiran, uploads/hasil — file privat (403)

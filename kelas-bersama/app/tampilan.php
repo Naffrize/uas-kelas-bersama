@@ -47,7 +47,7 @@ function dataUmum(string $judulHalaman): array
         'dasar' => urlDasar(),                 // awal alamat: {{dasar}}admin/tugas.php
         'csrf' => $_SESSION['csrf'] ?? '',     // token CSRF untuk setiap form POST
         'aset' => [
-            'favicon' => aset('favicon.svg'),
+            'favicon' => aset('img/logo-kb-ikon.png'),   // lambang logo Kelas Bersama
             'appJs' => aset('js/app.js'),
             'tailwindCadangan' => aset('js/tailwind-cadangan.js'),
             'tailwindLokal' => aset('js/vendor/tailwindcss-browser-4.3.5.js'),
